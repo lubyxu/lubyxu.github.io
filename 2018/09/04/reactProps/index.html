@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/09/04/reactProps/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="原文链接：https://reactjs.org/docs/render-props.html “render props”是实现React组件之间的共享代码的一个技巧。这种方式是利用React组件的属性。而这个属性是一个函数的形式。">
-<meta property="og:locale" content="default">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-09-04T11:51:29.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Props">
@@ -78,15 +78,17 @@
             <div class="clearfix sf-menu">
               <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">主页</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">文章</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories/translation">翻译</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于我</a> </li>
                     
               </ul>
             </div>
@@ -119,7 +121,7 @@
     <div class="article-meta">
       
 	<a href="/2018/09/04/reactProps/" class="article-date">
-	  <time datetime="2018-09-04T10:01:47.000Z" itemprop="datePublished">September 4, 2018</time>
+	  <time datetime="2018-09-04T10:01:47.000Z" itemprop="datePublished">九月 4, 2018</time>
 	</a>
 
       
@@ -205,7 +207,7 @@
   
   
     <a href="/2018/08/30/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">Hello World</div>
     </a>
   
@@ -218,7 +220,7 @@
 
   <aside id="sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">文章目录</strong>
     
       <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#利用render-props解决组件功能复用"><span class="nav-number">1.</span> <span class="nav-text">利用render props解决组件功能复用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用其他props，而不是render-props"><span class="nav-number">2.</span> <span class="nav-text">用其他props，而不是render props</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-PureComponent里处理render-props要小心"><span class="nav-number">3.1.</span> <span class="nav-text">React.PureComponent里处理render props要小心</span></a></li></ol></li></ol>
     
@@ -231,15 +233,17 @@
     </div>
     <!-- <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/" class="mobile-nav-link">主页</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/archives" class="mobile-nav-link">文章</a>
   
-    <a href="/categories" class="mobile-nav-link">Categories</a>
+    <a href="/categories/translation" class="mobile-nav-link">翻译</a>
   
-    <a href="/tags" class="mobile-nav-link">Tags</a>
+    <a href="/categories" class="mobile-nav-link">分类</a>
   
-    <a href="/about" class="mobile-nav-link">About</a>
+    <a href="/tags" class="mobile-nav-link">标签</a>
+  
+    <a href="/about" class="mobile-nav-link">关于我</a>
   
 </nav> -->
     <footer id="footer" class="site-footer">
