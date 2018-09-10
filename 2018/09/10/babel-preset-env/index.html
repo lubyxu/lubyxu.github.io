@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="翻译自：https://babeljs.io/docs/en/babel-preset-envBabel 7.0.0@babel/preset-env 是一个智能preset，它使用最新的javascript规则，而不用因为环境不同（chrome，FF），调整对应的语法转化（和可选的浏览器polyfills）。这样可以更加便捷，你的bundles更加小。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@babel&#x2F;preset-env">
+<meta property="og:url" content="http://yoursite.com/2018/09/10/babel-preset-env/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="翻译自：https://babeljs.io/docs/en/babel-preset-envBabel 7.0.0@babel/preset-env 是一个智能preset，它使用最新的javascript规则，而不用因为环境不同（chrome，FF），调整对应的语法转化（和可选的浏览器polyfills）。这样可以更加便捷，你的bundles更加小。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-10T12:28:59.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@babel&#x2F;preset-env">
+<meta name="twitter:description" content="翻译自：https://babeljs.io/docs/en/babel-preset-envBabel 7.0.0@babel/preset-env 是一个智能preset，它使用最新的javascript规则，而不用因为环境不同（chrome，FF），调整对应的语法转化（和可选的浏览器polyfills）。这样可以更加便捷，你的bundles更加小。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/10/babel-preset-env/"/>
+
+
+
+
+
+  <title>@babel/preset-env | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/babel-preset-env/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">@babel/preset-env</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T20:28:59+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>翻译自：<a href="https://babeljs.io/docs/en/babel-preset-env" target="_blank" rel="noopener">https://babeljs.io/docs/en/babel-preset-env</a><br>Babel 7.0.0<br>@babel/preset-env 是一个智能preset，它使用最新的javascript规则，而不用因为环境不同（chrome，FF），调整对应的语法转化（和可选的浏览器polyfills）。这样可以更加便捷，你的bundles更加小。</p>
+<a id="more"></a>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>可通过npm<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/preset-env</span><br></pre></td></tr></table></figure></p>
+<p>可通过yarn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add @babel/preset-env --dev</span><br></pre></td></tr></table></figure></p>
+<h1 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h1><p>若不是因为很多很棒的开源项目，比如browserslist, compat-table, 和 electron-to-chromium，@babel/preset-env就不会有。</p>
+<p>我们通过那些开源项目，形成一个关于环境版本和javascript语法、浏览器功能的映射。@babel/preset-env会获取你指定的环境版本（<a href="https://babeljs.io/docs/en/babel-preset-env#targets），根据他的映射与检查，从而获得关于编译的plugin的列表，然后传给babel。（@babel/preset-env会拿你的指定版本，到字典里面去查找，找出对应的版本所需的编译插件，然后传递给babel）。" target="_blank" rel="noopener">https://babeljs.io/docs/en/babel-preset-env#targets），根据他的映射与检查，从而获得关于编译的plugin的列表，然后传给babel。（@babel/preset-env会拿你的指定版本，到字典里面去查找，找出对应的版本所需的编译插件，然后传递给babel）。</a></p>
+<h1 id="浏览器继承"><a href="#浏览器继承" class="headerlink" title="浏览器继承"></a>浏览器继承</h1><p>对于支持浏览器或者桌面应用的项目，我们推荐你用.browserslistrc（<a href="https://github.com/browserslist/browserslist）文件与指定目标。可能在你的文件目录里已经有了这个文件，因为这个文件在很多工具里都存在，比如autoprefixer" target="_blank" rel="noopener">https://github.com/browserslist/browserslist）文件与指定目标。可能在你的文件目录里已经有了这个文件，因为这个文件在很多工具里都存在，比如autoprefixer</a>, stylelint, eslint-plugin-compat等。</p>
+<p>@babel/preset-env默认会用browserslist的config，除非你设置了targets或者ignoreBrowserslistConfig。</p>
+<p>栗子：只关心大于0.25%的市场需求，所需的polyfills和code transforms。<br>.babelrc<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"presets"</span>: [</span><br><span class="line">    [</span><br><span class="line">      <span class="string">"@babel/preset-env"</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"useBuiltIns"</span>: <span class="string">"entry"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>.browserslistrc<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 0.25%</span><br><span class="line">not dead</span><br></pre></td></tr></table></figure></p>
+<p>或者可以直接在package.json里设置<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"browserslist": "&gt; 0.25%, not dead"</span><br></pre></td></tr></table></figure></p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><p>关于perset更多的配置，可以查看plugin/preset options文档（<a href="http://babeljs.io/docs/en/plugins/#plugin-preset-options）" target="_blank" rel="noopener">http://babeljs.io/docs/en/plugins/#plugin-preset-options）</a> </p>
+<h2 id="target"><a href="#target" class="headerlink" title="target"></a>target</h2><p><code>string | Array&lt;string&gt; | { [string]: string }</code>, defaults to <code>{}</code>.<br>描述你的项目所支持的环境。这个也可以是browserslist-compatible查询：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"targets"</span>: <span class="string">"&gt; 0.25%, not dead"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可以是项目支持的最低浏览器版本：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"targets"</span>: &#123;</span><br><span class="line">    <span class="attr">"chrome"</span>: <span class="string">"58"</span>,</span><br><span class="line">    <span class="attr">"ie"</span>: <span class="string">"11"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上表示chrome至少是58版本，ie至少是11版本。chrome, opera, edge, firefox, safari, ie, ios, android, node, electron这些是可选项。<br>PS：如果targets没有定义，@babel/preset-env的效果是和@babel/preset-es2015, @babel/preset-es2016， @babel/preset-es2017共同作用的效果是一样一样的。然而，我们并不推荐这种方式使用preset-env（如下），因为他并没有发挥他可以指定环境版本的优势。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"presets"</span>: [<span class="string">"@babel/preset-env"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="targets-esmodules"><a href="#targets-esmodules" class="headerlink" title="targets.esmodules"></a>targets.esmodules</h3><p><code>boolean</code><br>你的目标浏览器可能支持ES Modules，<strong>当定义了targets.esmodules后，targets.browsers就会被忽略</strong>。你可以利用这个方案，结合<code>&lt;script type=&quot;module&quot;&gt;&lt;/script&gt;</code>去合成更小的bundler包。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"presets"</span>: [</span><br><span class="line">    [</span><br><span class="line">      <span class="string">"@babel/preset-env"</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"targets"</span>: &#123;</span><br><span class="line">          <span class="attr">"esmodules"</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="targets-node"><a href="#targets-node" class="headerlink" title="targets.node"></a>targets.node</h3><p><code>string | &quot;current&quot; | true</code>。<br>如果你想针对当前node版本编译，你可以指定”node”: true或者”node”: “current”，或者”node”: process.versions.node</p>
+<h3 id="targets-safari"><a href="#targets-safari" class="headerlink" title="targets.safari"></a>targets.safari</h3><p><code>string | &quot;tp&quot;</code><br>如果你想针对Safari的technology preview 版本，你可以指定”safari”: “tp”。</p>
+<h3 id="targets-browser（在最后一个版本废弃，直接用target）"><a href="#targets-browser（在最后一个版本废弃，直接用target）" class="headerlink" title="targets.browser（在最后一个版本废弃，直接用target）"></a>targets.browser（在最后一个版本废弃，直接用target）</h3><p>string | Array<string><br>基于browserlist的一个浏览器选择器。（比方说：last 2 versions, &gt; 5%, safari tp：最近2个版本，市场份额＞5%，支持safari tp）。</string></p>
+<h2 id="spec"><a href="#spec" class="headerlink" title="spec"></a>spec</h2><p><code>boolean, defaults to false</code><br>允许更加规范的兼容。但是对于支持它的插件来说，转换的比较慢</p>
+<h2 id="loose"><a href="#loose" class="headerlink" title="loose"></a>loose</h2><p><code>boolean, defaults to false</code><br>允许支持loose转化（<a href="http://2ality.com/2015/12/babel6-loose-mode.html）的任何presets插件。" target="_blank" rel="noopener">http://2ality.com/2015/12/babel6-loose-mode.html）的任何presets插件。</a></p>
+<h2 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h2><p><code>&quot;amd&quot; | &quot;umd&quot; | &quot;systemjs&quot; | &quot;commonjs&quot; | &quot;cjs&quot; | false, defaults to &quot;commonjs&quot;.</code><br>将ES6转化成任意module type，当设置成false的时候，他不会转化。</p>
+<h2 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h2><p><code>boolean, defaults to false</code><br>将使用的targets/plugins 和插件数据版本中指定的版本（<a href="https://github.com/babel/babel/blob/master/packages/babel-preset-env/data/plugins.json）输出到console.log" target="_blank" rel="noopener">https://github.com/babel/babel/blob/master/packages/babel-preset-env/data/plugins.json）输出到console.log</a></p>
+<h2 id="include"><a href="#include" class="headerlink" title="include"></a>include</h2><p>Array&lt;string|RegExp&gt;, defaults to []<br>一系列总是包含的插件。这个功能对于某些场景是比较有用的。比如原生实现中存在bug，或者一个不支持的功能和支持的功能组合起来不起作用。比方说，Node4支持原生class，但是不知道spread，如果super用在了spread参数里。这时，@babel/plugin-transform-classes需要设置在include选项中。否则他就没法转化带有super的spread了。</p>
+<h2 id="exclude"><a href="#exclude" class="headerlink" title="exclude"></a>exclude</h2><p>Array&lt;string|RegExp&gt;, defaults to []<br>一些列总是要移出的插件。这个选项只用于『黑名单』转化。比如说，你不需要用到generators，同时不想要regeneratorRuntime，你可以把@babel/plugin-transform-regenerator写在exclude里。或者利用其他插件比如fast-async替代Babel’s async-to-gen。</p>
+<h2 id="useBuiltIns"><a href="#useBuiltIns" class="headerlink" title="useBuiltIns"></a>useBuiltIns</h2><p>“usage” | “entry” | false, defaults to false<br>这个选项为导入core-js模块添加引用。因此会解决文件本身关于core-js的问题。如果没有core-js的依赖，或者是有其他版本，就可能需要在你的应用最开头中指定core-js@2的依赖。<br>这个选项指名@babel/preset-env如何处理polyfills的。</p>
+<h3 id="useBuiltIns-‘entry’"><a href="#useBuiltIns-‘entry’" class="headerlink" title="useBuiltIns: ‘entry’"></a>useBuiltIns: ‘entry’</h3><p>NOTE: 在你整个app只需要require一次require(“@babel/polyfill”)，否则就会有问题。<br>这个选项是开启了一个插件，即将文件中的import “@babel/polyfill”或require(“@babel/polyfill”)替换成基于环境的独立的需求。<br>如下：<br>In:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"@babel/polyfill"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>Out (different based on environment):<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"core-js/modules/es7.string.pad-start"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"core-js/modules/es7.string.pad-end"</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="useBuiltIns-‘usage’-experimental"><a href="#useBuiltIns-‘usage’-experimental" class="headerlink" title="useBuiltIns: ‘usage’ (experimental)"></a>useBuiltIns: ‘usage’ (experimental)</h3><p>每个文件中添加指定polyfill。我们可以利用一个bundler只会加载一次polyfill。<br>In:<br>a.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Promise</span>();</span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure></p>
+<p>b.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br></pre></td></tr></table></figure></p>
+<p>Out (如果运行环境不支持):<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"core-js/modules/es6.promise"</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Promise</span>();</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"core-js/modules/es6.map"</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br></pre></td></tr></table></figure>
+<p>Out (如果运行环境支持):<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Promise</span>();</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br></pre></td></tr></table></figure>
+<h3 id="useBuiltIns-false"><a href="#useBuiltIns-false" class="headerlink" title="useBuiltIns: false"></a>useBuiltIns: false</h3><p>不会为文件自动添加polyfills，或者将import “@babel/polyfill”转化成适合环境的polyfills。</p>
+<h2 id="forceAllTransforms"><a href="#forceAllTransforms" class="headerlink" title="forceAllTransforms"></a>forceAllTransforms</h2><p>boolean, defaults to false.<br>利用Babel 7的Javascipt config file（<a href="https://babeljs.io/docs/en/config-files#javascript）支持，可以允许在production的环境下强制转化。" target="_blank" rel="noopener">https://babeljs.io/docs/en/config-files#javascript）支持，可以允许在production的环境下强制转化。</a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">api</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    presets: [</span><br><span class="line">      [</span><br><span class="line">        <span class="string">"@babel/preset-env"</span>,</span><br><span class="line">        &#123;</span><br><span class="line">          targets: &#123;</span><br><span class="line">            chrome: <span class="number">59</span>,</span><br><span class="line">            edge: <span class="number">13</span>,</span><br><span class="line">            firefox: <span class="number">50</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="comment">// for uglifyjs...</span></span><br><span class="line">          forceAllTransforms: api.env(<span class="string">"production"</span>),</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>默认情况下，这个preset会对指定环境做polyfills。 如果你想对所有做强制转化，你可以打开它。</p>
+<h2 id="configPath"><a href="#configPath" class="headerlink" title="configPath"></a>configPath</h2><p>string, defaults to process.cwd()<br>.browserslistrc的文件目录，如果没找到，就从他的上级文件找。直到找到为止。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/04/reactProps/" rel="next" title="React Props">
+                <i class="fa fa-chevron-left"></i> React Props
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作方式"><span class="nav-number">2.</span> <span class="nav-text">工作方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器继承"><span class="nav-number">3.</span> <span class="nav-text">浏览器继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选项"><span class="nav-number">4.</span> <span class="nav-text">选项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#target"><span class="nav-number">4.1.</span> <span class="nav-text">target</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#targets-esmodules"><span class="nav-number">4.1.1.</span> <span class="nav-text">targets.esmodules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#targets-node"><span class="nav-number">4.1.2.</span> <span class="nav-text">targets.node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#targets-safari"><span class="nav-number">4.1.3.</span> <span class="nav-text">targets.safari</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#targets-browser（在最后一个版本废弃，直接用target）"><span class="nav-number">4.1.4.</span> <span class="nav-text">targets.browser（在最后一个版本废弃，直接用target）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spec"><span class="nav-number">4.2.</span> <span class="nav-text">spec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loose"><span class="nav-number">4.3.</span> <span class="nav-text">loose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#modules"><span class="nav-number">4.4.</span> <span class="nav-text">modules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#debug"><span class="nav-number">4.5.</span> <span class="nav-text">debug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include"><span class="nav-number">4.6.</span> <span class="nav-text">include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exclude"><span class="nav-number">4.7.</span> <span class="nav-text">exclude</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useBuiltIns"><span class="nav-number">4.8.</span> <span class="nav-text">useBuiltIns</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#useBuiltIns-‘entry’"><span class="nav-number">4.8.1.</span> <span class="nav-text">useBuiltIns: ‘entry’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useBuiltIns-‘usage’-experimental"><span class="nav-number">4.8.2.</span> <span class="nav-text">useBuiltIns: ‘usage’ (experimental)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useBuiltIns-false"><span class="nav-number">4.8.3.</span> <span class="nav-text">useBuiltIns: false</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forceAllTransforms"><span class="nav-number">4.9.</span> <span class="nav-text">forceAllTransforms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#configPath"><span class="nav-number">4.10.</span> <span class="nav-text">configPath</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
