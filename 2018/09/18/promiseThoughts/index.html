@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Promise," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文翻译：https://www.promisejs.org/个人的理解：原文就叫做Promise，我之所以改成Promise思想，一方面是因为他是首页，单纯叫Promise有点不清楚；另一方面，从全文看下来，虽然文章有点过时，但是关于为什么会有Promise还是讲的有理有据的。">
+<meta name="keywords" content="Promise">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promises 思想">
+<meta property="og:url" content="http://yoursite.com/2018/09/18/promiseThoughts/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="原文翻译：https://www.promisejs.org/个人的理解：原文就叫做Promise，我之所以改成Promise思想，一方面是因为他是首页，单纯叫Promise有点不清楚；另一方面，从全文看下来，虽然文章有点过时，但是关于为什么会有Promise还是讲的有理有据的。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-18T10:29:51.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Promises 思想">
+<meta name="twitter:description" content="原文翻译：https://www.promisejs.org/个人的理解：原文就叫做Promise，我之所以改成Promise思想，一方面是因为他是首页，单纯叫Promise有点不清楚；另一方面，从全文看下来，虽然文章有点过时，但是关于为什么会有Promise还是讲的有理有据的。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/18/promiseThoughts/"/>
+
+
+
+
+
+  <title>Promises 思想 | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/18/promiseThoughts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Promises 思想</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-18T17:01:06+08:00">
+                2018-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文翻译：<a href="https://www.promisejs.org/" target="_blank" rel="noopener">https://www.promisejs.org/</a><br>个人的理解：原文就叫做Promise，我之所以改成Promise思想，一方面是因为他是首页，单纯叫Promise有点不清楚；另一方面，从全文看下来，虽然文章有点过时，但是关于为什么会有Promise还是讲的有理有据的。<br><a id="more"></a></p>
+<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>假设你利用下面这段代码去读取文件，并将文件解析成json格式。下面代码看起来非常简洁，便于理解。但是因为这段代码会阻塞后面运行，因此你很少会用它。也就是说，当你从硬盘读文件时，其他的事情将都会暂停。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为了提高性能且让应用有响应式，我们需要将所有关于IO的操作都转化成异步操作。最简单的方式是利用回调函数。但是单纯地用回调函数也是有问题的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename, callback</span>)</span>&#123;</span><br><span class="line">  fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> callback(err);</span><br><span class="line">    callback(<span class="literal">null</span>, <span class="built_in">JSON</span>.parse(res));</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>callback这个回调函数参数会令我们感到困惑，同时这个回调函数输入的是什么，返回的是什么值，我们也是不知道的。</li>
+<li>不符合控制流的思想，即并不是主动控制流程。</li>
+<li>无法处理<code>JSON.parse</code>的异常。</li>
+</ul>
+<p>我们需要处理<code>JSON.parse</code>的异常。但是我们还要注意，不要处理回调函数(callback)里的异常（PS:回调函数里的报错应该是由回调函数处理）。因此，我们写下了下面一段糟糕的代码去处理报错：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename, callback</span>)</span>&#123;</span><br><span class="line">  fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> callback(err);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      res = <span class="built_in">JSON</span>.parse(res);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">      <span class="keyword">return</span> callback(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    callback(<span class="literal">null</span>, res);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>尽管我们用上面那段代码处理了异常，但是仍然未解决callback这个问题。Promise可以不用考虑callback参数问题，就能很简洁地处理异常。并且，不需要改变底层架构，即代码侵入不强。（比方：<a href="https://www.promisejs.org/implementing/）" target="_blank" rel="noopener">https://www.promisejs.org/implementing/）</a></p>
+<h1 id="什么是Promise？"><a href="#什么是Promise？" class="headerlink" title="什么是Promise？"></a>什么是Promise？</h1><p>Promise的核心是代表一个异步操作的结果。因此，一个Promise只是下面三种状态中的一种：</p>
+<ul>
+<li>pending：Promise的初始化状态</li>
+<li>fulfilled：成功操作的状态</li>
+<li>rejected：失败操作的状态<br>一旦一个promise处于fulfilled还是rejected，这个promise将不可改变。</li>
+</ul>
+<h1 id="构建Promise"><a href="#构建Promise" class="headerlink" title="构建Promise"></a>构建Promise</h1><p>一旦所有的API都返回了Promise，那么你不会经常需要手动构建promise。同时，我们需要一种方法去polyfil现有的API。比方说，我们会去重写readFile：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">filename, enc</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>&#123;</span><br><span class="line">    fs.readFile(filename, enc, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">      <span class="keyword">else</span> fulfill(res);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们用<code>new Promise</code>创建promise实例。工厂函数创建一个promise，回调函数来做实际工作。这个函数伴随着两个参数，并被立即调用。第一个参数执行promise成功的工作，第二个参数拒绝promise。一旦实际工作完成后，我们会根据操作的状态调用响应的函数。</p>
+<h1 id="等待Promise"><a href="#等待Promise" class="headerlink" title="等待Promise"></a>等待Promise</h1><p>想要用Promise，我们必须在某种方式上可以支持等待他成功或失败。这种方式是利用<code>promise.done</code>。利用这种思想，我们重新写上面的方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>&#123;</span><br><span class="line">    readFile(filename, <span class="string">'utf8'</span>).done(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        fulfill(<span class="built_in">JSON</span>.parse(res));</span><br><span class="line">      &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">        reject(ex);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, reject);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里仍然许多处的异常处理，但是写错误的机会少了。另外，我们也不再需要一些陌生又多余的参数。<br><em>非标准：</em>用在例子里的<code>promise.done</code>没有写入标准。但是他被很多promise的库支持。推荐对这个方法做polyfill。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="转化-链式"><a href="#转化-链式" class="headerlink" title="转化/链式"></a>转化/链式</h1><p>按照我们都示例，我们真正想做的是通过另一个操作转化promise。在我们的案例中，第二个操作就是同步，即：JSON.parse是同步的。但在其他情况下，这个第二步操作也很可能是一个异步的。幸运的是，promise有API转化promise和链式的方法。</p>
+<p>简单的说，.then和.done是等效的。换句话说，如果你要处理promise的结果的话，用.then，如果你只是想等待他结束而不处理值的话用.done。</p>
+<p>现在，我们重写下这个案例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(res);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为JSON.parse也是一个函数，因此可以如下改写：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="built_in">JSON</span>.parse);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="实现-Polyfills"><a href="#实现-Polyfills" class="headerlink" title="实现/Polyfills"></a>实现/Polyfills</h1><p>p Promise在node.js和browser环境下都能使用。</p>
+<h1 id="jQuery"><a href="#jQuery" class="headerlink" title="jQuery"></a>jQuery</h1><p>需要提醒的是，jQuery调用的Promise和其他的Promise不一样。jQuery没有一个好的API体系，这样会非常容易误解。幸运的是，你可以将jquery的Promise转化成标准的Promise：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jQueryPromise = $.ajax(<span class="string">'/data.json'</span>);</span><br><span class="line"><span class="keyword">var</span> realPromise = <span class="built_in">Promise</span>.resolve(jQueryPromise);</span><br><span class="line"><span class="comment">//now just use `realPromise` however you like.</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h1><p>Promise目前只在一小部分浏览器上才能得到支持（<a href="http://kangax.github.io/compat-table/es6/）。但是这些不兼容都能用polyfills解决。(PS:目前来说大多数现代浏览器是支持的)" target="_blank" rel="noopener">http://kangax.github.io/compat-table/es6/）。但是这些不兼容都能用polyfills解决。(PS:目前来说大多数现代浏览器是支持的)</a><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.promisejs.org/polyfills/promise-7.0.4.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>目前没有浏览器支持<code>Promise.prototype.done</code>。所以如果你想用那个功能，你就需要用polyfill，至少需要引入下面的polyfill<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><p>目前没有一个适当的实践在nodejs环境下做polyfill。但是你可以用require的方式引入。<br>安装promise<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install promise</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以用require的方式去赋值给变量<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">Promise</span> = <span class="built_in">require</span>(<span class="string">'promise'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>promise库提供了很多比较实用的API，供开发者与node.js交互。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> readFile = <span class="built_in">Promise</span>.denodeify(<span class="built_in">require</span>(<span class="string">'fs'</span>).readFile);</span><br><span class="line"><span class="comment">// 返回一个Promise</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename, callback</span>)</span>&#123;</span><br><span class="line">  <span class="comment">// 如果callback存在，返回一个undefined。提供的callback</span></span><br><span class="line">  <span class="comment">// 第一个参数是error，第二个参数是result。</span></span><br><span class="line">  <span class="comment">// 如果callback不存在，返回一个promise</span></span><br><span class="line">  <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>)</span><br><span class="line">    .then(<span class="built_in">JSON</span>.parse)</span><br><span class="line">    .nodeify(callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>(下面是自己想的)</p>
+<h1 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h1><p>现在返回来看下，比对下优化前后：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// before</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename, callback</span>)</span>&#123;</span><br><span class="line">  fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> callback(err);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      res = <span class="built_in">JSON</span>.parse(res);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">      <span class="keyword">return</span> callback(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    callback(<span class="literal">null</span>, res);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// after</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">filename, enc</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>&#123;</span><br><span class="line">    fs.readFile(filename, enc, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">      <span class="keyword">else</span> fulfill(res);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="built_in">JSON</span>.parse);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前后对比，通过包裹一层Promise，最直观的感受是我们解耦了代码，将两部操作链式执行。同时减弱了代码侵入。另外，我们不用去关心callback的参数到底是什么，因为Promise用.then去解决了成功的回调。用.catch解决失败的回调。<br>因此，个人认为Promise当基本思想是将控制权限交给了开发者，实现了更加幽雅的编程体验。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Promise/" rel="tag"># Promise</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/10/babel-preset-env/" rel="next" title="@babel/preset-env">
+                <i class="fa fa-chevron-left"></i> @babel/preset-env
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是Promise？"><span class="nav-number">2.</span> <span class="nav-text">什么是Promise？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构建Promise"><span class="nav-number">3.</span> <span class="nav-text">构建Promise</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#等待Promise"><span class="nav-number">4.</span> <span class="nav-text">等待Promise</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#转化-链式"><span class="nav-number">5.</span> <span class="nav-text">转化/链式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现-Polyfills"><span class="nav-number">6.</span> <span class="nav-text">实现/Polyfills</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jQuery"><span class="nav-number">7.</span> <span class="nav-text">jQuery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Browser"><span class="nav-number">8.</span> <span class="nav-text">Browser</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node-js"><span class="nav-number">9.</span> <span class="nav-text">Node.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对比"><span class="nav-number">10.</span> <span class="nav-text">对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
