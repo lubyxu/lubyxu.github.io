@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文来自：https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops 先解释下问什么要翻译这篇文章：React16推出的新的生命周期，解决了一些问题。但这些新的生命周期本人实在是太陌生了。并且在用16版本的时候，本人几乎用不到这些新的生命周期。为了加深印象，决定翻译此文章。 这篇文章详细介绍了React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React.Component">
+<meta property="og:url" content="http://yoursite.com/2018/10/09/react-component/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="原文来自：https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops 先解释下问什么要翻译这篇文章：React16推出的新的生命周期，解决了一些问题。但这些新的生命周期本人实在是太陌生了。并且在用16版本的时候，本人几乎用不到这些新的生命周期。为了加深印象，决定翻译此文章。 这篇文章详细介绍了React">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/10/09/react-component/lifecycle.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/09/react-component/setStateInConstructor.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/09/react-component/setState立即更新.png">
+<meta property="og:updated_time" content="2018-10-09T02:38:09.362Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React.Component">
+<meta name="twitter:description" content="原文来自：https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops 先解释下问什么要翻译这篇文章：React16推出的新的生命周期，解决了一些问题。但这些新的生命周期本人实在是太陌生了。并且在用16版本的时候，本人几乎用不到这些新的生命周期。为了加深印象，决定翻译此文章。 这篇文章详细介绍了React">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/09/react-component/lifecycle.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/09/react-component/"/>
+
+
+
+
+
+  <title>React.Component | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/09/react-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React.Component</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-09T10:38:09+08:00">
+                2018-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文来自：<a href="https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops" target="_blank" rel="noopener">https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops</a></p>
+<p>先解释下问什么要翻译这篇文章：React16推出的新的生命周期，解决了一些问题。但这些新的生命周期本人实在是太陌生了。并且在用16版本的时候，本人几乎用不到这些新的生命周期。为了加深印象，决定翻译此文章。</p>
+<p>这篇文章详细介绍了React组件类的API。假设你已经非常熟悉React的相关基础概念，比如说Component、Props、State和生命周期。如果你不理解，那就先弄懂它们。<br><a id="more"></a></p>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>React允许你用类或者函数去定义一个组件。用类定义的组件可以提供很多特征，这些特征会在接下来讲到。你需要通过<code>extends React.Component</code>定义一个React组件类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Welcome</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;this.props.name&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个组件类里，用户必须定义render的实现。其他方法是可选的。</p>
+<p><strong>React强烈反对构建自定义的基类组件。</strong>因为React中，代码复用的主要通过组合实现，并不是继承。</p>
+<blockquote>
+<p>注意：<br>React不会强制用户使用ES6语法。如果你不想用ES6，也可以使用create-react-class模块或者类似的自定义抽象。你可以阅读：<a href="https://reactjs.org/docs/react-without-es6.html" target="_blank" rel="noopener">不用ES6写React</a>。</p>
+</blockquote>
+<h1 id="组件生命周期"><a href="#组件生命周期" class="headerlink" title="组件生命周期"></a>组件生命周期</h1><p>组件都有生命周期的方法，这些方法允许你在一个阶段的某些特殊时期重载生命周期，运行自定义代码。你可以将<a href="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/" target="_blank" rel="noopener">生命周期图</a>当做备忘录。<br><img src="/2018/10/09/react-component/lifecycle.png" title="生命周期"><br>下面这个列表中，经常用到的生命周期会用粗体表示。其他的很少用到。</p>
+<h2 id="挂载阶段"><a href="#挂载阶段" class="headerlink" title="挂载阶段"></a>挂载阶段</h2><p>当一个组件实例被创建出来，并插入到DOM中，下面这些方法会按顺序执行：</p>
+<ul>
+<li><strong>constructor()</strong></li>
+<li>static getDerivedStateFromProps()</li>
+<li><strong>render()</strong></li>
+<li><strong>componentDidMount()</strong><blockquote>
+<p>注意：<br>下面的这些方法，是要被废掉的。因此在你的项目中，尽量避免使用它们。</p>
+<ul>
+<li>UNSAFE_componentWillMount()</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h2 id="更新阶段"><a href="#更新阶段" class="headerlink" title="更新阶段"></a>更新阶段</h2><p>props和state的改变会引发更新。当组件重新调用render的时候，下面的方法会按序发生：</p>
+<ul>
+<li>static getDerivedStateFromProps()</li>
+<li>shouldComponentUpdate()</li>
+<li><strong>render()</strong></li>
+<li>getSnapshotBeforeUpdate()</li>
+<li><strong>componentDidUpdate()</strong><blockquote>
+<p>注意：<br>下面的这些方法，是要被废掉的。因此在你的项目中，尽量避免使用它们。</p>
+<ul>
+<li>UNSAFE_componentWillUpdate()</li>
+<li>UNSAFE_componentWillReceiveProps()</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h2 id="卸载阶段"><a href="#卸载阶段" class="headerlink" title="卸载阶段"></a>卸载阶段</h2><p>当组件从DOM节点中移出时，调用下面的方法：</p>
+<ul>
+<li><strong>componentWillUnmount()</strong></li>
+</ul>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>当render中发生异常时，会调用下面方法。异常捕获来自子节点的渲染中、生命周期中、构建中。</p>
+<ul>
+<li>componentDidCatch()</li>
+</ul>
+<h1 id="其他API"><a href="#其他API" class="headerlink" title="其他API"></a>其他API</h1><p>组件同样提供了其他的方法：</p>
+<ul>
+<li>setState()</li>
+<li>forceUpdate()</li>
+</ul>
+<h1 id="类属性"><a href="#类属性" class="headerlink" title="类属性"></a>类属性</h1><ul>
+<li>defaultProps</li>
+<li>displayName</li>
+</ul>
+<h1 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h1><ul>
+<li>props</li>
+<li>state</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><h2 id="常用生命周期"><a href="#常用生命周期" class="headerlink" title="常用生命周期"></a>常用生命周期</h2><p>这一节里列举的方法在你的项目中会经常使用。可视化参考，你可以看<a href="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/" target="_blank" rel="noopener">生命周期图</a>。</p>
+<h3 id="render"><a href="#render" class="headerlink" title="render()"></a>render()</h3><p>一个组件类，必须实现它的render方法。<br>当它被调用时，render会检查this.props和this.state，同时返回下面其中一个类型：</p>
+<ul>
+<li><strong>React elements</strong>。典型的是通过JSX创建。比如说，<code>&lt;div /&gt;</code>和<code>&lt;MyComponent /&gt;</code>都是React elements，它们分别指导React渲染DOM节点和用户自定义组件。</li>
+<li><strong>Arrays and fragments</strong>。允许你通过render返回多个elements。阅读文档<a href="https://reactjs.org/docs/fragments.html" title="target=_blank fragments" target="_blank" rel="noopener">fragments</a></li>
+<li><strong>Portals</strong>。允许你在另外一个DOM节点渲染组件。阅读文档<a href="https://reactjs.org/docs/portals.html" title="target=_blank portals" target="_blank" rel="noopener">portals</a></li>
+<li><strong>String and numbers</strong>。做为文本节点渲染到DOM中。</li>
+<li><strong>Booleans or null</strong>。渲染空。（当test是boolean类型是，支持<code>return test &amp;&amp; &lt;Child /&gt;</code>这种形式。）</li>
+</ul>
+<p>render()必须是纯函数，意味着render不能修改state。当state，props一致的时候，render返回的永远是一样的。并且render并不会与浏览器直接交互。<br>如果你需要和浏览器交互，应该在componentDidMount或者其他生命周期里实现。保证render是纯函数可以让思维更加简洁。</p>
+<blockquote>
+<p>注意：<br>当shouldComponentUpdate()返回false时。render不会调用。</p>
+</blockquote>
+<h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor()"></a>constructor()</h3><p><strong>如果你不需要初始化state，或者绑定事件，你就不需要实现你的constructor</strong><br>React组件在挂载之前，会调用constructor。组件的constructor调用里，<code>super(props)</code>必须在所用语句前调用。否则，在constructor里，this.props返回undefined，从而导致bug。</p>
+<p>通常，constructor主要用于下面两种目的：</p>
+<ul>
+<li>初始化state</li>
+<li>绑定事件<br>在constructor里，你不能调用setState。如果组件需要一个本地状态，只需要在constructor里直接对this.state赋值即可：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">  <span class="keyword">super</span>(props);</span><br><span class="line">  <span class="comment">// Don't call this.setState() here!</span></span><br><span class="line">  <span class="keyword">this</span>.state = &#123; <span class="attr">counter</span>: <span class="number">0</span> &#125;;</span><br><span class="line">  <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>this.state这种直接赋值的方式，只能出现在constructor里。也就是说，其它地方，你只能使用<code>this.setState()</code>。<br>为了避免在constructor里引入其它副作用，对于某种情况，你可以写在<code>componentDidMount()</code>里。</p>
+<blockquote>
+<p>注意：避免将props拷贝到state中！下面案例在某些场景里会出现问题<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line"> <span class="keyword">super</span>(props);</span><br><span class="line"> <span class="comment">// Don't do this!</span></span><br><span class="line"> <span class="keyword">this</span>.state = &#123; <span class="attr">color</span>: props.color &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上面的问题非常没有必要，并且会产生bug。因为可以直接从props中获取color属性，为什么要多创建一个state呢；另外，因为在constructor中初始化的，所以后续对color的更新，不会反馈到state中。但是上面的情况只是在某些案例中会有问题。<br>如果你本来就要忽略props的更新，你可以用这种方式。在那种情况下，将props.color重命名为initialColor或者defaultColor会更加说的通。<font color="#dd0000"><strong>如果你想重置这个组件的初始状态，你可以改变他的key值。</strong></font><br>我们将某些依赖于props的state叫做派生状态。可以阅读<a href="https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html" title="target=_blank avoid_derived_state" target="_blank" rel="noopener">avoid derived state</a>，了解更多。</p>
+<h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount()"></a>componentDidMount()</h3><p>componentDidMount在组件插入DOM之后，立即被调用。DOM的初始化操作，也是在这个函数中实现的。如果你需要从远程拉取数据初始化，componentDidMount是最好实现的地方。<br>同样，关于订阅的一些方法，也在这里设置。如果你订阅了方法，记得在componentWillUnmount里取消订阅。例如：如果你在componentDidMount设置了setTimeout句柄，那你就在componentWillUnmount里对这个句柄clearTimeout。</p>
+<p>componentDidMount里如果立即调用setState，会立刻触发额外的render，但这个render发生在浏览器渲染到屏幕之前。这样就能确保：即便render在这个情况下调用了两次，用户没法看到中间状态（PS：不太理解这句话，但是render可能是在浏览器渲染之前调用，因为只有render调用了，才能返回对应的类型，去指导浏览器做出相应的渲染。如果在浏览器更新之后调用，render返回的新的VNode，为了状态与视图一致，势必会再次渲染浏览器。）。这种方式需要小心使用，因为这经常会产生性能问题。大多数情况下，你其实可以将这个初始状态在constructor里实现。<br>但是，在某些情况下：比如需要依赖获取提示信息的位置，设置state时，你只能在componentDidMount里去获取并setState。</p>
+<h3 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate()"></a>componentDidUpdate()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">componentDidUpdate(prevProps, prevState, snapshot)</span><br></pre></td></tr></table></figure>
+<p>componentDidUpdate()会在update发生之后立即调用。这个方法不会发生在第一次render之后。<br>通常，我们会在这里操作DOM。同样，由于当前props和之前props不同，调用远程接口，在componentDidUpdate里实现也是很好的实践：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">componentDidUpdate(prevProps) &#123;</span><br><span class="line">  <span class="comment">// Typical usage (don't forget to compare props):</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.props.userID !== prevProps.userID) &#123;</span><br><span class="line">    <span class="keyword">this</span>.fetchData(<span class="keyword">this</span>.props.userID);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>你可以在componentDidUpdate直接调用setState，但是必须在一个条件里，如比上面栗子所示。否则，就会死循环。同时，他也会造成额外的render，即便这些render用户不可见，但是对应用也造成了性能影响。如果你想『镜像』一些来自props的state，你可以考虑直接使用props。请阅读：<a href="https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html" target="_blank" rel="noopener">why copying props into state causes bugs</a>。</p>
+<p>如果组件里实现了getSnapshotBeforeUpdate的生命周期，这个getSnapshotBeforeUpdate返回的值会做为componentDidUpdate的第三个参数：”snapshot”，否则这个值就是undefined。</p>
+<blockquote>
+<p>注意：<br>如果shouldComponentUpdate()返回的是false，componentDidUpdate不会被调用。</p>
+</blockquote>
+<h3 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h3><p>在组件卸载，销毁之前，componentWillUnmount会被调用。componentWillUnmount里实现所有清理流程，比如clearTimeout， removeEventListener，cancel请求。<br>在componentWillUnmount里，不要调用setState，因为这时的setState不会产生额外的render。一旦一个组件卸载掉了，他就永远不可能再次挂载。这个组件就永远的走了。。。</p>
+<h2 id="不常用的生命周期"><a href="#不常用的生命周期" class="headerlink" title="不常用的生命周期"></a>不常用的生命周期</h2><p>这一节里的方法不经常用。偶尔用他们会很方便，但是大多数组件都不太会用。在生命周期图里，你可以通过勾选『显示不常用的生命周期』看到他们。</p>
+<h3 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h3><p>利用shouldComponentUpdate告知React当前的state或props的改变是否会影响到组件的输出。默认情况下，只要改变props或state都会重新调用render。并且大多数情况，你可以不用改这个函数，采用他的默认行为即可。<br>当新的props和state接受到时，shouldComponentUpdate在render之前调用。默认返回的是true。这个方法在初次render或者forceUpdate的时候，是不会被调用的。<br>当需要性能优化的时候，往往会用到shouldComponentUpdate。不要为了阻止重新render去用这个函数，因为这很可能会产生bug。如果在你需要手写shouldComponentUpdate的情况下，考虑使用<a href="https://reactjs.org/docs/react-api.html#reactpurecomponent" target="_blank" rel="noopener">PureComponent</a>替换。PureComponent会做浅层的props，state比较，从而减少你跳过必要更新到可能。<br>如果你一定要手写shouldComponentUpdate，你可以比较this.props和nextProps，this.state和nextState。返回false，告知React这次的更新需要忽略掉。需要注意的是，<font color="#dd0000">父元素的return false不会影响到子元素state改变造成的render</font>。<br>我们非常不赞成在shouldComponentUpdate使用深比较或者利用JSON.stringify()比较，这会非常影响性能。<br>目前，如果shouldComponentUpdate返回false，UNSAFE_componentWillUpdate(), render(), 和 componentDidUpdate() 都不会被调用。未来，React会将shouldComponentUpdate视为一个提示，而不是严格的指令。这样，即便它返回的是false，也会使组件再次调用render。</p>
+<h3 id="static-getDerivedStateFromProps"><a href="#static-getDerivedStateFromProps" class="headerlink" title="static getDerivedStateFromProps()"></a>static getDerivedStateFromProps()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> getDerivedStateFromProps(props, state)</span><br></pre></td></tr></table></figure>
+<p>翻译成中文：从props中得到派生状态。由此可见，派生状态依赖于props。getDerivedStateFromProps发生在render之前，发生在第一次render和更新触发的render之前。他返回的是一个对象更新state；或者也可以返回null，表示什么也不更新。<br>当状态随着时间的变化，依赖于props的改变，getDerivedStateFromProps才会被用到。比如说，利用它会非常方便实现<code>&lt;Transition&gt;</code>。因为他需要比较<code>&lt;Transition&gt;</code>之前的chldren和改变之后的chldren，来决定哪些需要淡入，淡出。<br>派生状态会导致代码变得冗长，使得你很难思考组件的逻辑。但是，你可以使用其它更简便的方式替换：</p>
+<ul>
+<li>如果由于props的改变，你需要操作一个副作用（比如，抓取数据或动画），你可以在componentDidUpdate里实现。</li>
+<li>如果当props改变，你需要重新计算某些值得时候，利用<a href="https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#what-about-memoization" target="_blank" rel="noopener">带有记忆的辅助函数</a>。</li>
+<li>如果当props改变时，你需要重置某些状态，可以考虑将组件转变为傻瓜组件，或者改变这个组件的key值。</li>
+</ul>
+<p>getDerivedStateFromProps无法获取组件的实例，即在getDerivedStateFromProps里，this返回的是undefined。如果你愿意，你可以通过组件的props和state提取出以props和state为参数的纯函数，在getDerivedStateFromProps和其他类方法之间实现代码复用。<br>这个方法会在每次render都之前无条件触发。<strong>这个会与UNSAFE_componentWillReceiveProps形成对比，UNSAFE_componentWillReceiveProps只会在父组件render的时候才会被触发，并不会因为setState而触发</strong>。</p>
+<h3 id="getSnapshotBeforeUpdate"><a href="#getSnapshotBeforeUpdate" class="headerlink" title="getSnapshotBeforeUpdate()"></a>getSnapshotBeforeUpdate()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getSnapshotBeforeUpdate(prevProps, prevState)</span><br></pre></td></tr></table></figure>
+<p>getSnapshotBeforeUpdate在最近一次输出的render被committed到DOM之前调用，即发生在DOM更新之前。它允许你从DOM那，在DOM改变之前获取一些信息，比如说当时的scroll的位置。这个函数返回的值会做为componentDidUpdate的参数。<br>getSnapshotBeforeUpdate不会经常用到，但是在某些交互的场景下会用到。比如说一个聊天的线程需要处理scroll的位置。<br>这个函数必须返回一个snapshot值或者（null）。比如说：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScrollingList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.listRef = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getSnapshotBeforeUpdate(prevProps, prevState) &#123;</span><br><span class="line">    <span class="comment">// Are we adding new items to the list?</span></span><br><span class="line">    <span class="comment">// Capture the scroll position so we can adjust scroll later.</span></span><br><span class="line">    <span class="comment">// 如果我们向list中添加一个item，我们会先记录下当前scroll的值，</span></span><br><span class="line">    <span class="comment">// 用在后面的地方</span></span><br><span class="line">    <span class="keyword">if</span> (prevProps.list.length &lt; <span class="keyword">this</span>.props.list.length) &#123;</span><br><span class="line">      <span class="keyword">const</span> list = <span class="keyword">this</span>.listRef.current;</span><br><span class="line">      <span class="keyword">return</span> list.scrollHeight - list.scrollTop;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidUpdate(prevProps, prevState, snapshot) &#123;</span><br><span class="line">    <span class="comment">// If we have a snapshot value, we've just added new items.</span></span><br><span class="line">    <span class="comment">// Adjust scroll so these new items don't push the old ones out of view.</span></span><br><span class="line">    <span class="comment">// (snapshot here is the value returned from getSnapshotBeforeUpdate)</span></span><br><span class="line">    <span class="comment">// 如果能获取到snapshot，就表示我们刚才添加了一个item。</span></span><br><span class="line">    <span class="comment">// 我们需要调整scroll，这样这些新加的items就不会将原来老的推出到屏幕之外了。</span></span><br><span class="line">    <span class="comment">// snapshot是来自于getSnapshotBeforeUpdate</span></span><br><span class="line">    <span class="keyword">if</span> (snapshot !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> list = <span class="keyword">this</span>.listRef.current;</span><br><span class="line">      list.scrollTop = list.scrollHeight - snapshot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div ref=&#123;<span class="keyword">this</span>.listRef&#125;&gt;&#123;<span class="comment">/* ...contents... */</span>&#125;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>栗子：在render调用之后，DOM更新之前，获取一个距离。在DOM更新之后，根据当时计算出的距离，重置scrollTop。从理解上来看，栗子想表达的意思是我们每增加一个item，scroll都会向上移动新增item高度的距离。<br>在上面的例子中，scrollHeight必须在getSnapshotBeforeUpdate计算。因为在『render』和『commit』阶段中，存在一段延迟。也就是说，getSnapshotBeforeUpdate计算的是当时的dom数据，而不是更新之后的dom数据。</p>
+<h3 id="componentDidCatch"><a href="#componentDidCatch" class="headerlink" title="componentDidCatch()"></a>componentDidCatch()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">componentDidCatch(error, info)</span><br></pre></td></tr></table></figure>
+<p>错误边界是用来捕获<strong>子组件</strong>发生的错误，记录错误原因，并用UI显示。它优化了原先因为子组件异常而使整个组件树崩溃的不好体验。错误边界发生在子组件rendering阶段，生命周期阶段，整个组件树的构建阶段。<br>如果类组件定义了componentDidCatch这个方法，就表示这个组件会成为错误边界。在这个方法里调用setState可以将错误信息以界面的形式显示出来。componentDidCatch只能用来从异常中恢复，不要尝试将它用在控制流中，即不要将它控制我们的业务逻辑等。<br>想知道更多错误边界，可以看：<a href="https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html" target="_blank" rel="noopener">Error Handling in React 16</a></p>
+<blockquote>
+<p>注意：<br>错误边界只能捕获子组件产生的错误，无法捕获自身发生的错误。</p>
+</blockquote>
+<h2 id="待废弃方法"><a href="#待废弃方法" class="headerlink" title="待废弃方法"></a>待废弃方法</h2><p>下面的方法虽然仍然有效，但是我们不推荐使用。你可以通过<a href="https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html}了解如何迁移这些方法。" title="### UNSAFE_componentWillMount() UNSAFE_componentWillMount()发生在挂载阶段、render之前。因此在这个方法中，直接使用setState是不会触发额外的render的。通常情况下，我们推荐在constructor里初始化state。 我们应该避免在这个方法里去做一些拉取操作或者订阅操作。这些操作应该在componentDidMount实现。 但是这个方法是server端渲染可用的唯一生命周期。 > 注意： 这个方法之前叫做componentWillMount，直到Version 17，他都有效。你也可以利用{% link rename-unsafe-lifecycles codemod https://github.com/reactjs/react-codemod#rename-unsafe-lifecycles" target="_blank" rel="noopener">这篇文章</a>自动更新你的组件。</p>
+<h3 id="UNSAFE-componentWillReceiveProps"><a href="#UNSAFE-componentWillReceiveProps" class="headerlink" title="UNSAFE_componentWillReceiveProps()"></a>UNSAFE_componentWillReceiveProps()</h3><blockquote>
+<p>注意：<br>这个生命周期经常会导致bug，不一致问题。因此，React将在未来废除这个方法。如果因为props改变，你需要操作一个副作用（拉取数据或动画），推荐用componentDidUpdate方法替代。<br>其它情况，你可以参考：<a href="https://reactjs.org/docs/forwarding-refs.html#forwarding-refs-to-dom-components" target="_blank" rel="noopener">这篇文章</a>。<br>如果你需要用componentWillReceiveProps计算因props改变而造成的某些值改变的话，你可以用一些<a href="https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#what-about-memoization" target="_blank" rel="noopener">辅助函数</a><br>如果你想因为props改变，重置state，可以考虑将组件换成完全可控的，或者利用key属性。<br>在非常非常罕见的时候，你可能会用到getDerivedStateFromProps做为最后的方案。</p>
+</blockquote>
+<p>UNSAFE_componentWillReceiveProps是<strong>已挂载</strong>的组件介绍到新的props的时候，才会被调用。如果因为props改变，你需要更新state，你需要将当前的props和nextProps对比，然后用setState。<br><strong>如果因为父组件导致当前组件重新render，那么这个方法会被无条件调用。</strong>所以确定这里会有个比较。<br>React不会在未挂载阶段调用UNSAFE_componentWillReceiveProps。这个方法只会在props改变，和父组件重新render的时候调用。使用this.setState()通常并不会触发UNSAFE_componentWillReceiveProps。</p>
+<h3 id="UNSAFE-componentWillUpdate"><a href="#UNSAFE-componentWillUpdate" class="headerlink" title="UNSAFE_componentWillUpdate()"></a>UNSAFE_componentWillUpdate()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UNSAFE_componentWillUpdate(nextProps, nextState)</span><br></pre></td></tr></table></figure>
+<p>当组件接受到新的props或state，UNSAFE_componentWillUpdate会在render之前调用。第一次render之前，是不会触发这个函数的。<br>不要在这个函数里调用this.setState()，或者其他触发更新行为：dispatch redux action。<br>这个方法，可以被componentDidUpdate换种方式替换。如果你是想获取DOM信息的话，你可以考虑使用getSnapshotBeforeUpdate。</p>
+<h2 id="其它API"><a href="#其它API" class="headerlink" title="其它API"></a>其它API</h2><p>不像上节那些废弃的方法，下面的方法你可以在你的组件中调用：setState和forceUpdate。</p>
+<h3 id="setState"><a href="#setState" class="headerlink" title="setState()"></a>setState()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setState(updater[, callback])</span><br></pre></td></tr></table></figure>
+<p>setState将组件状态的更新排列到队列中，并告知React这个组件，以及他的子组件都需要根据新的state重新render。基本上都是通过这个方法来更新界面的。<br>将setState设想成一个request，而不是立即更新的指令。为了优化性能，React会晚点执行它，这样就可以一下更新一些组件。React不会保证state会立即改变。<br>setState不会立即更新组件。通常都会被批量或延迟更新。这样就会导致我们经常在setState之后，立即执行this.state返回的还是原来的值。如果你不想这样，你可以使用componentDidUpdate或者用setState的callback来实现。这两个方法都能确保在state改变之后调用。如果你想基于原来的state去setState，可以重点看下updater参数。<br>setState都会触发render，除非shouldComponentUpdate返回的是false。<br>setState第一个参数是updater：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(state, props) =&gt; stateChange</span><br></pre></td></tr></table></figure></p>
+<p>state是对应用更改时组件状态的应用，不要直接修改state值。通过直接创建一个新对象表示这个改变。比如说，假设根据props.step增加value值：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.setState(<span class="function">(<span class="params">state, props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="attr">counter</span>: state.counter + props.step&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>updater中的state和props，都能确保未来会被更新。updater输出的是和state的一个<strong>浅层合并</strong>。<br>updater的第二个参数是可选的回调函数，这个回调函数是在setState完成，component重新render之后才会调用。通常情况下，我们会用componentDidUpdate替换这个方法。<br>同样，updater也接受object：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setState(stateChange[, callback])</span><br></pre></td></tr></table></figure></p>
+<p>这个会将stateChange浅层合并到state中，也就是说，他之后合并state.xxx，并不会合并state.xx.xxx之后的东东:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.setState(&#123;<span class="attr">quantity</span>: <span class="number">2</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>这种方式的setState也是异步调用的。在同一个生命周期中，多次调用，会被批量处理。比如说，你想在一个生命周期中多次更行item.quantity:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.assign(</span><br><span class="line">  previousState,</span><br><span class="line">  &#123;<span class="attr">quantity</span>: state.quantity + <span class="number">1</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">quantity</span>: state.quantity + <span class="number">1</span>&#125;,</span><br><span class="line">  ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>在这个例子中，后续的调用将会覆盖先前的调用的值，所以quantity只会加1.如果下面一个state是依赖当前state，我们推荐使用function的模式：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.setState(<span class="function">(<span class="params">state</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="attr">quantity</span>: state.quantity + <span class="number">1</span>&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>更多信息，如下所示：</p>
+<ul>
+<li><a href="https://reactjs.org/docs/state-and-lifecycle.html" target="_blank" rel="noopener">State and Lifecycle guide</a></li>
+<li><a href="https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973" target="_blank" rel="noopener">In depth: When and why are setState() calls batched?</a></li>
+<li><a href="https://github.com/facebook/react/issues/11527#issuecomment-360199710" target="_blank" rel="noopener">In depth: Why isn’t this.state updated immediately?</a>
+</li>
+</ul>
+<h3 id="forceUpdate"><a href="#forceUpdate" class="headerlink" title="forceUpdate"></a>forceUpdate</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">component.forceUpdate(callback)</span><br></pre></td></tr></table></figure>
+<p>默认情况下，你的组件会在state、props改变的之后，自动render。但是，如果组件的render还依赖于别的数据，你可以使用这个方法。调用这个方法会跳过shouldComponentUpdate（想想也是合情合理），触发组件render。对于子组件来说，会走正常的生命周期流程，包括子组件中的shouldComponentUpdate。<br>正常情况下，尽量避免使用这个方法。</p>
+<h2 id="Class属性"><a href="#Class属性" class="headerlink" title="Class属性"></a>Class属性</h2><h3 id="defaultProps"><a href="#defaultProps" class="headerlink" title="defaultProps"></a>defaultProps</h3><p>defaultProps是定义在组件类上的。<font color="#dd0000"><strong>当属性是undefined的时候，才会用到defaultProps；null是不会的</strong></font>：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CustomButton.defaultProps = &#123;</span><br><span class="line">  color: <span class="string">'blue'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>如果props.color没有提供，这个就是’blue’。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">CustomButton</span> /&gt;</span> ; // props.color will be set to blue</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>但是props.color是null，color就会是null<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">CustomButton</span> <span class="attr">color</span>=<span class="string">&#123;null&#125;</span> /&gt;</span> ; // props.color will remain null</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="displayName"><a href="#displayName" class="headerlink" title="displayName"></a>displayName</h3><p>displayName使用在debugging信息。通常情况下，你不需要设置他，因为他是根据function的名称或者class定义组件而来的。除非为了调试，你想设置一个不同的名称或者创建一个高阶组件时，你可以设置这个属性。详情可见：<a href="https://reactjs.org/docs/higher-order-components.html#convention-wrap-the-display-name-for-easy-debugging" target="_blank" rel="noopener">Wrap the Display Name for Easy Debugging</a>。</p>
+<h2 id="实例属性-1"><a href="#实例属性-1" class="headerlink" title="实例属性"></a>实例属性</h2><h3 id="props"><a href="#props" class="headerlink" title="props"></a>props</h3><p>this.props是在组件被调用的时候定义的。可以查看<a href="https://reactjs.org/docs/components-and-props.html" target="_blank" rel="noopener">Components and Props</a>获取更多信息。<br>this.props.children是比较特殊的属性。通常由JSX表达式中的子标签而不是标签本身定义。</p>
+<h3 id="state"><a href="#state" class="headerlink" title="state"></a>state</h3><p>state包含组件的数据，这些数据总会发生改变。state是用户定义的，他应该是plain JS object。什么plain Object，可以参考<a href="https://github.com/jonschlinkert/is-plain-object/blob/master/index.js" target="_blank" rel="noopener">这段代码</a>。<br>如果某些值并不是用来render的，最好不要放在state中。这些值可以放在组件实例上。如：this._id。<br>阅读<a href="https://reactjs.org/docs/state-and-lifecycle.html" target="_blank" rel="noopener">State and Lifecycle</a>关注更多关于state的信息。<br>永远不要直接操作state，应该通过setState的方式。需要将this.state视为不可操作的对象。（PS：应该是为了前后对比，生命周期中，总用state, nextState）。</p>
+<h1 id="个人观点或问题"><a href="#个人观点或问题" class="headerlink" title="个人观点或问题"></a>个人观点或问题</h1><h2 id="1-setState在constructor中使用会怎么样？"><a href="#1-setState在constructor中使用会怎么样？" class="headerlink" title="1. setState在constructor中使用会怎么样？"></a>1. setState在constructor中使用会怎么样？</h2><p>React会报warning：Can’t call setState on a component that is not yet mounted。如下：<br><img src="/2018/10/09/react-component/setStateInConstructor.png" title="set state in constructor"><br>想想也是，setState设置组件render状态，在还未挂载的组件上setState，其实是不科学的，还不如直接对this.state赋值.</p>
+<h2 id="2-重置组件状态"><a href="#2-重置组件状态" class="headerlink" title="2. 重置组件状态"></a>2. 重置组件状态</h2><p>本人经常用的方法是利用生命周期：componentWillReceiveProps来重置组件状态。本文给出的方案是：直接改变组件的key值。哇塞~豁然开朗。超级棒~</p>
+<h2 id="3-getDerivedStateFromProps-和-componentWillReceiveProps有什么不同"><a href="#3-getDerivedStateFromProps-和-componentWillReceiveProps有什么不同" class="headerlink" title="3. getDerivedStateFromProps 和 componentWillReceiveProps有什么不同"></a>3. getDerivedStateFromProps 和 componentWillReceiveProps有什么不同</h2><p><code>getDerivedStateFromProps</code>会在每次render都之前无条件触发。<strong>这个会与<code>UNSAFE_componentWillReceiveProps</code>形成对比，UNSAFE_componentWillReceiveProps只会在父组件render的时候才会被触发，并不会因为setState而触发</strong>。如果父组件重新render，子组件的<code>UNSAFE_componentWillReceiveProps</code>会被无条件调用。</p>
+<h2 id="4-In-depth-When-and-why-are-setState-calls-batched"><a href="#4-In-depth-When-and-why-are-setState-calls-batched" class="headerlink" title="4. In depth: When and why are setState() calls batched?"></a>4. In depth: When and why are setState() calls batched?</h2><p>link: <a href="https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973" target="_blank" rel="noopener">https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973</a></p>
+<p><font color="#dd0000">重点：不管你有多少个update，不管你发生在多少个组件里，只要在同一个事件里，都只会调用一次render</font><br>大体意思：在React16以及之前的版本，React会在<strong>一个event句柄</strong>里批量更行update。换而言之，在event之外，则立即更新。但是在React17版本，React将会默认批量更新，不管你是在event里面还是外面。<br>假设，<code>Child</code>，<code>Parent</code>在click事件里都调用了setState，为了不要让<code>Child</code>render两次，可行的方案是采用批量更新。<br>如下：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">H</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    state = &#123;</span><br><span class="line">        value: <span class="number">1</span></span><br><span class="line">    &#125;;</span><br><span class="line">    onClick = <span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            value</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                I am Parent, parentValue is &#123;<span class="keyword">this</span>.state.value&#125;</span><br><span class="line">                &lt;W onClick=&#123;<span class="keyword">this</span>.onClick&#125; /&gt;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        );</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">class W extends Component &#123;</span></span><br><span class="line"><span class="regexp">    state = &#123;</span></span><br><span class="line"><span class="regexp">        value: 1</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    onClick = e =&gt; &#123;</span></span><br><span class="line"><span class="regexp">        this.setState(&#123;</span></span><br><span class="line"><span class="regexp">            value: this.state.value + 1</span></span><br><span class="line"><span class="regexp">        &#125;);</span></span><br><span class="line"><span class="regexp">        this.props.onClick(this.state.value + 1);</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    render() &#123;</span></span><br><span class="line"><span class="regexp">        return (</span></span><br><span class="line"><span class="regexp">            &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                I am child, child value is &#123;this.state.value&#125;</span></span><br><span class="line"><span class="regexp">                &lt;button onClick=&#123;this.onClick&#125;&gt;click me&lt;/</span>button&gt;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        )</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>当<code>&lt;W /&gt;</code>点击按钮，子组件调用了自身方法，设置自身state的同时，调用了父组件的onClick方法，父组件设置父组件自身的state。如果是立即更新，<code>&lt;W /&gt;</code>会调用两次render，显然，消耗性能。React采用批量更新，因为子组件、父组件在一个事件里，因此，子组件只调用了一次render。</p>
+<p>那如何立即调用两次呢？很明显，将setState转成异步。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">H</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    state = &#123;</span><br><span class="line">        value: <span class="number">1</span></span><br><span class="line">    &#125;;</span><br><span class="line">    onClick = <span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            value</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                I am Parent, parentValue is &#123;<span class="keyword">this</span>.state.value&#125;</span><br><span class="line">                &lt;W onClick=&#123;<span class="keyword">this</span>.onClick&#125; /&gt;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        );</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">class W extends Component &#123;</span></span><br><span class="line"><span class="regexp">    state = &#123;</span></span><br><span class="line"><span class="regexp">        value: 1</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    onClick = e =&gt; &#123;</span></span><br><span class="line"><span class="regexp">        Promise.resolve()</span></span><br><span class="line"><span class="regexp">        .then(() =&gt; &#123;</span></span><br><span class="line"><span class="regexp">            const value = this.state.value + 1;</span></span><br><span class="line"><span class="regexp">            this.setState(&#123;</span></span><br><span class="line"><span class="regexp">                value</span></span><br><span class="line"><span class="regexp">            &#125;);  /</span><span class="regexp">/ re-render</span></span><br><span class="line"><span class="regexp">            console.log(this.state.value, value); /</span><span class="regexp">/ 永远是相等的。</span></span><br><span class="line"><span class="regexp">            this.props.onClick(value); /</span><span class="regexp">/ re-render by parent</span></span><br><span class="line"><span class="regexp">        &#125;);</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    render() &#123;</span></span><br><span class="line"><span class="regexp">        return (</span></span><br><span class="line"><span class="regexp">            &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                I am child, child value is &#123;this.state.value&#125;</span></span><br><span class="line"><span class="regexp">                &lt;button onClick=&#123;this.onClick&#125;&gt;click me&lt;/</span>button&gt;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        )</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>将事件里的setState异步出来，因为不在一个句柄，所以setState立即调用。此时我们会发现，在setState立即调用之后，直接调用this.state.value，我们会发现得到的是更新后的值。这个时候若还用之前的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve()</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        value: <span class="keyword">this</span>.state.value + <span class="number">1</span></span><br><span class="line">    &#125;);  <span class="comment">// re-render</span></span><br><span class="line">    <span class="keyword">this</span>.props.onClick(<span class="keyword">this</span>.state.value + <span class="number">1</span>); <span class="comment">// re-render by parent</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>我们会发现parentValue 永远会比childValue大1。如下：<br><img src="/2018/10/09/react-component/setState立即更新.png" title="setState立即更新"><br>梳理下整个的调用流程：child setState -&gt; child re-render -&gt; console.log -&gt; parent setState -&gt; parent render -&gt; child re-render。</p>
+<p>那么如何将不在一个事件里的更新做批量处理呢？React提供了另外一个方法，这个方法在React16里，不属于安全方法，但是到了React17里会更新。<code>ReactDOM.unstable_batchedUpdates</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve()</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    ReactDOM.unstable_batchedUpdates(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            value: <span class="keyword">this</span>.state.value + <span class="number">1</span></span><br><span class="line">        &#125;); <span class="comment">// doesn't re-render</span></span><br><span class="line">        <span class="keyword">this</span>.props.onClick(<span class="keyword">this</span>.state.value + <span class="number">1</span>); <span class="comment">// doesn't re-render</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// When we exit unstable_batchedUpdates, re-renders once</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>只有当我们退出<code>ReactDOM.unstable_batchedUpdates</code>之后，React才会调用一次render。其实，对于React事件内部，是被<code>unstable_batchedUpdates</code>包裹起来的。这就是为什么<strong>不管你有多少个update，不管你发生在多少个组件里，只要在同一个事件里，都只会调用一次render</strong>。</p>
+<h2 id="Plain-Object"><a href="#Plain-Object" class="headerlink" title="Plain Object"></a>Plain Object</h2><p>来自<a href="http://api.jquery.com/Types/#PlainObject" target="_blank" rel="noopener">http://api.jquery.com/Types/#PlainObject</a><br>像用花括号{}或new Oject()创建出来的对象，是plain object。已下几种不是：</p>
+<ol>
+<li>Function</li>
+<li>Array</li>
+<li>String</li>
+<li>Booleans</li>
+<li>Numbers</li>
+<li>NaN</li>
+<li>BOM</li>
+<li>…</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/18/promiseThoughts/" rel="next" title="Promises 思想">
+                <i class="fa fa-chevron-left"></i> Promises 思想
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#组件生命周期"><span class="nav-number">2.</span> <span class="nav-text">组件生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#挂载阶段"><span class="nav-number">2.1.</span> <span class="nav-text">挂载阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新阶段"><span class="nav-number">2.2.</span> <span class="nav-text">更新阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载阶段"><span class="nav-number">2.3.</span> <span class="nav-text">卸载阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理"><span class="nav-number">2.4.</span> <span class="nav-text">错误处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他API"><span class="nav-number">3.</span> <span class="nav-text">其他API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类属性"><span class="nav-number">4.</span> <span class="nav-text">类属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例属性"><span class="nav-number">5.</span> <span class="nav-text">实例属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用生命周期"><span class="nav-number">6.1.</span> <span class="nav-text">常用生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">6.1.1.</span> <span class="nav-text">render()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constructor-NaN"><span class="nav-number">6.1.2.</span> <span class="nav-text">constructor()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidMount"><span class="nav-number">6.1.3.</span> <span class="nav-text">componentDidMount()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">6.1.4.</span> <span class="nav-text">componentDidUpdate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">6.1.5.</span> <span class="nav-text">componentWillUnmount</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不常用的生命周期"><span class="nav-number">6.2.</span> <span class="nav-text">不常用的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">6.2.1.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#static-getDerivedStateFromProps"><span class="nav-number">6.2.2.</span> <span class="nav-text">static getDerivedStateFromProps()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getSnapshotBeforeUpdate"><span class="nav-number">6.2.3.</span> <span class="nav-text">getSnapshotBeforeUpdate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidCatch"><span class="nav-number">6.2.4.</span> <span class="nav-text">componentDidCatch()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#待废弃方法"><span class="nav-number">6.3.</span> <span class="nav-text">待废弃方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UNSAFE-componentWillReceiveProps"><span class="nav-number">6.3.1.</span> <span class="nav-text">UNSAFE_componentWillReceiveProps()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNSAFE-componentWillUpdate"><span class="nav-number">6.3.2.</span> <span class="nav-text">UNSAFE_componentWillUpdate()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它API"><span class="nav-number">6.4.</span> <span class="nav-text">其它API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setState"><span class="nav-number">6.4.1.</span> <span class="nav-text">setState()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#forceUpdate"><span class="nav-number">6.4.2.</span> <span class="nav-text">forceUpdate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class属性"><span class="nav-number">6.5.</span> <span class="nav-text">Class属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#defaultProps"><span class="nav-number">6.5.1.</span> <span class="nav-text">defaultProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#displayName"><span class="nav-number">6.5.2.</span> <span class="nav-text">displayName</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例属性-1"><span class="nav-number">6.6.</span> <span class="nav-text">实例属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#props"><span class="nav-number">6.6.1.</span> <span class="nav-text">props</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#state"><span class="nav-number">6.6.2.</span> <span class="nav-text">state</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个人观点或问题"><span class="nav-number">7.</span> <span class="nav-text">个人观点或问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-setState在constructor中使用会怎么样？"><span class="nav-number">7.1.</span> <span class="nav-text">1. setState在constructor中使用会怎么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-重置组件状态"><span class="nav-number">7.2.</span> <span class="nav-text">2. 重置组件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-getDerivedStateFromProps-和-componentWillReceiveProps有什么不同"><span class="nav-number">7.3.</span> <span class="nav-text">3. getDerivedStateFromProps 和 componentWillReceiveProps有什么不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-In-depth-When-and-why-are-setState-calls-batched"><span class="nav-number">7.4.</span> <span class="nav-text">4. In depth: When and why are setState() calls batched?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plain-Object"><span class="nav-number">7.5.</span> <span class="nav-text">Plain Object</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
