@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文来自：https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html 关于性能分析的还有一篇文章：Airbnb 爱彼迎房源详情页中的 React 性能优化，可以一块结合看看~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="introducing the react profiler">
+<meta property="og:url" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="原文来自：https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html 关于性能分析的还有一篇文章：Airbnb 爱彼迎房源详情页中的 React 性能优化，可以一块结合看看~">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/profilerTab.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/profiling.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/stop-profiling.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/commit-selector.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/filtering-commits.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/flame-chart.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/zoom-in-and-out.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/props-and-state.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/see-which-props-changed.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/ranked-chart.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/component-chart.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/see-all-commits-for-a-fiber.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/no-render-times-for-selected-component.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/interactions.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/interactions-for-commit.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/navigate-between-interactions-and-commits.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/no-profiler-data-multi-root.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/select-a-root-to-view-profiling-data.gif">
+<meta property="og:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/no-timing-data-for-commit.png">
+<meta property="og:updated_time" content="2018-10-11T03:45:20.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="introducing the react profiler">
+<meta name="twitter:description" content="原文来自：https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html 关于性能分析的还有一篇文章：Airbnb 爱彼迎房源详情页中的 React 性能优化，可以一块结合看看~">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/11/introducing-the-react-profiler/profilerTab.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/11/introducing-the-react-profiler/"/>
+
+
+
+
+
+  <title>introducing the react profiler | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/11/introducing-the-react-profiler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">introducing the react profiler</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-11T11:45:20+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文来自：<a href="https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html" target="_blank" rel="noopener">https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html</a></p>
+<p>关于性能分析的还有一篇文章：<a href="https://mp.weixin.qq.com/s/OMvNKq1P5cDCzzqpmGpOjw" target="_blank" rel="noopener">Airbnb 爱彼迎房源详情页中的 React 性能优化</a>，可以一块结合看看~</p>
+<a id="more"></a>
+<p>React16.5开始，React DevTools开始支持新的一个插件。这个插件基于React实验型API，采集每个被渲染组件的时间信息。这样我们就可以明确了解我们React应用的瓶颈在哪里。这个插件同样兼容未来React即将推出的时间分片和挂起的特征。</p>
+<h1 id="如何找到收集数据"><a href="#如何找到收集数据" class="headerlink" title="如何找到收集数据"></a>如何找到收集数据</h1><p>在React DevTools面板上能看到Profiler这个tab。<br><img src="/2018/10/11/introducing-the-react-profiler/profilerTab.png"></p>
+<blockquote>
+<p>注意：<br>只有React16.5+的开发模式才支持Profiler。生产环境的profiling包也可以用来分析。</p>
+</blockquote>
+<p>Profiler面板刚开始时空的，你需要点击录制按钮开始收集数据。<br><img src="/2018/10/11/introducing-the-react-profiler/profiling.png"><br>一旦你点击了录制按钮，DevTools就会在你每次render组件的时候自动收集信息。然后你就按照平时的方式正常操作。当你想要结束采集的时候，在点击下『Stop』按钮就可以了。<br><img src="/2018/10/11/introducing-the-react-profiler/stop-profiling.png"><br>假设你的应用在你收集数据的时候至少render了一次，DevTools会通过几种不同的维度来展示React收集到的信息。</p>
+<h1 id="性能数据"><a href="#性能数据" class="headerlink" title="性能数据"></a>性能数据</h1><h2 id="浏览commits"><a href="#浏览commits" class="headerlink" title="浏览commits"></a>浏览commits</h2><p>理论上，React将工作分成了两个阶段：</p>
+<ul>
+<li>render阶段：确定哪些变化会作用到DOM上。在这个过程中，React会调用render，然后将render得出来的结果和之前render出来的结果对比。</li>
+<li>commit阶段：将变化应用到DOM上。（浏览器端，就是React插入，更新，删除DOM的过程）。这个阶段，React会调用componentDidMount和componentDidUpdate这两个生命周期。</li>
+</ul>
+<p>React会根据commit将采集到的性能数据分组。显示如下：<br><img src="/2018/10/11/introducing-the-react-profiler/commit-selector.png"><br>图中每个bar表示一个commit。选中的bar显示为黑色。你可以点击选择任意一个bar。<br>每个bar的颜色和高度表示这个commit阶段的时间。高度黄色的bar要比矮的蓝色bar更加耗时。</p>
+<h2 id="过滤commits"><a href="#过滤commits" class="headerlink" title="过滤commits"></a>过滤commits</h2><p>采集的时间越长，应用render的次数就会越多。有时候，你可能会面临太多的commit，以至于很难处理。Profiler提供了一个过滤掉机制。我们可以定义一个阈值，Profiler就会隐藏掉那些快于阈值的commits。<br><img src="/2018/10/11/introducing-the-react-profiler/filtering-commits.gif"></p>
+<h2 id="火焰图"><a href="#火焰图" class="headerlink" title="火焰图"></a>火焰图</h2><p>火焰图表示某个commit的状态。火焰图中的每个bar都表示一个Component（比如：App， Nav）。bar的大小和颜色表示渲染组件和他的子节点需要多长时间。bar的宽度表示组件上次渲染时花费的时间，颜色表示当前提交的时间花费了多少时间。<br><img src="/2018/10/11/introducing-the-react-profiler/flame-chart.png"></p>
+<blockquote>
+<p>注意：<br>bar的宽度表示在上次渲染时渲染组件（及其子组件）所需的时间。如果组件在这次commit的时候，没有渲染，这个时间表示的就是之前的时间。bar越宽，需要渲染的时间就越长。<br>bar的颜色表示组件（及其子组件）在所选commit中render的时间。黄色组件表示消耗较长时间，蓝色消耗较少时间，灰色表示没有消耗时间。</p>
+</blockquote>
+<p>比如说，上图表示，选中的commit渲染消耗了18.4ms。Router组件是最消费时间的（18.4ms）。这个时间主要分布在他的两个子组件上：Nav（8.4ms）和Route（7.9ms）。剩下的时间用来渲染组件自身和组件剩下的子组件。</p>
+<p>你可以在火焰图上点击组件来放大缩小火焰图。<br><img src="/2018/10/11/introducing-the-react-profiler/zoom-in-and-out.gif"><br>点击火焰图上的组件同时也表示你选中了它。这时，右侧会显示这个组件在这次commit中的信息，包括它的props和state。通过这些，你可以深入了解到本次commit中，组件到底render了什么：<br><img src="/2018/10/11/introducing-the-react-profiler/props-and-state.gif"></p>
+<p>在某些情况下，选定一个组件，在不同commits中切换，会了解这个组件是因为什么原因render。<br><img src="/2018/10/11/introducing-the-react-profiler/see-which-props-changed.gif"><br>上图显示，切换到这两个commit之间，只有<code>state.scrollOffset</code>变化了，这很有可能就是List组件重新render的原因。</p>
+<h2 id="排名图"><a href="#排名图" class="headerlink" title="排名图"></a>排名图</h2><p>排名图表示的是一次commit。图中每个bar代表一个组件（比如说：App，Nav）。图中按序排列，所以一眼就能看出那个组件最消耗时间。<br><img src="/2018/10/11/introducing-the-react-profiler/ranked-chart.png"></p>
+<blockquote>
+<p>注意：<br>组件的render时间也包括了孩子的render时间，这个组件往往会在排名图上的前几个。</p>
+</blockquote>
+<p>和火焰图一样，你也可以通过点击组件来放大，缩小图。</p>
+<h2 id="组件图"><a href="#组件图" class="headerlink" title="组件图"></a>组件图</h2><p>有时候，了解在采集期间，某个组件渲染了多少次对于我们开发非常有用。组件图通过一个bar图展示了这些信息。每个bar表示组件一次render消耗的时间。每个bar的颜色表示其相对于其它组件render消耗时间的晨读。<br><img src="/2018/10/11/introducing-the-react-profiler/component-chart.png"><br>上图表示，List组件在采集的过程中，渲染了11次。从黄色可以看出，每一次渲染，List都最消耗时间。</p>
+<p>如何得到组件图呢？在组件上双击，或者如下图一样操作就可以了。<br><img src="/2018/10/11/introducing-the-react-profiler/see-all-commits-for-a-fiber.gif"><br>如果选中的组件在采集的过程中没有render，就会如下图显示：<br><img src="/2018/10/11/introducing-the-react-profiler/no-render-times-for-selected-component.png"></p>
+<h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><p>React也增加了另外一个实验型API，用来追踪更新原因——“交互”。如下所示：<br><img src="/2018/10/11/introducing-the-react-profiler/interactions.png"><br>上图所示，我们在一个采集期，最终到了4个交互。图中的每一行都代表着一个被追踪到的交互。带有颜色的点表示这个追踪中，commit的时间。</p>
+<p>你同样也可以从火焰图和排名图中看到某次commit与哪个交互有关：<br><img src="/2018/10/11/introducing-the-react-profiler/interactions-for-commit.png"></p>
+<p>你可以通过点击交互和commit来回切换：<br><img src="/2018/10/11/introducing-the-react-profiler/navigate-between-interactions-and-commits.gif"><br>目前这个API还是非常新，我们会在以后blog说详细说明。</p>
+<h1 id="常见问题答疑"><a href="#常见问题答疑" class="headerlink" title="常见问题答疑"></a>常见问题答疑</h1><ol>
+<li><p>No profiling data has been recorded for the selected root<br>如果你的应用存在多个根DOM，你在收集之后可能会看到下面这幅图：</p>
+<img src="/2018/10/11/introducing-the-react-profiler/no-profiler-data-multi-root.png">
+<p>这个表示在你选中的根元素上，没有收集到数据。这种情况下，尝试切换别的跟元素：</p>
+<img src="/2018/10/11/introducing-the-react-profiler/select-a-root-to-view-profiling-data.gif">
+</li>
+<li><p>No timing data to display for the selected commit<br>有时候，某个commit很快就结束了，以至于调用的<code>performance.now()</code>没办法给DevTools有效信息。这种情况下就会出现这个现象：</p>
+<img src="/2018/10/11/introducing-the-react-profiler/no-timing-data-for-commit.png"></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/09/react-component/" rel="next" title="React.Component">
+                <i class="fa fa-chevron-left"></i> React.Component
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何找到收集数据"><span class="nav-number">1.</span> <span class="nav-text">如何找到收集数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能数据"><span class="nav-number">2.</span> <span class="nav-text">性能数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览commits"><span class="nav-number">2.1.</span> <span class="nav-text">浏览commits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤commits"><span class="nav-number">2.2.</span> <span class="nav-text">过滤commits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#火焰图"><span class="nav-number">2.3.</span> <span class="nav-text">火焰图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排名图"><span class="nav-number">2.4.</span> <span class="nav-text">排名图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件图"><span class="nav-number">2.5.</span> <span class="nav-text">组件图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交互"><span class="nav-number">2.6.</span> <span class="nav-text">交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题答疑"><span class="nav-number">3.</span> <span class="nav-text">常见问题答疑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
