@@ -79,14 +79,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="翻译：https://babeljs.io/docs/en/presetsBabel presets是plugin的一组集合，甚至可以是一个共享option。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="babel presets">
+<meta property="og:url" content="http://yoursite.com/2019/02/16/babel-presets/index.html">
 <meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="翻译：https://babeljs.io/docs/en/presetsBabel presets是plugin的一组集合，甚至可以是一个共享option。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-04T11:47:56.977Z">
+<meta property="og:image" content="http://yoursite.com/2019/02/16/babel-presets/Plugins&Presets.svg">
+<meta property="og:updated_time" content="2019-02-16T07:29:54.459Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
+<meta name="twitter:title" content="babel presets">
+<meta name="twitter:description" content="翻译：https://babeljs.io/docs/en/presetsBabel presets是plugin的一组集合，甚至可以是一个共享option。">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/16/babel-presets/Plugins&Presets.svg">
 
 
 
@@ -116,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/16/babel-presets/"/>
 
 
 
 
 
-  <title>标签 | 牛牛是只🐱</title>
+  <title>babel presets | 牛牛是只🐱</title>
   
 
 
@@ -227,40 +232,154 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/babel-presets/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">标签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                2 tags in total
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Promise/" style="font-size: 12px; color: #ccc">Promise</a> <a href="/tags/React/" style="font-size: 12px; color: #ccc">React</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">babel presets</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T15:29:54+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>翻译：<a href="https://babeljs.io/docs/en/presets" target="_blank" rel="noopener">https://babeljs.io/docs/en/presets</a><br>Babel presets是plugin的一组集合，甚至可以是一个共享option。<br><a id="more"></a></p>
+<h1 id="官方Presets"><a href="#官方Presets" class="headerlink" title="官方Presets"></a>官方Presets</h1><p>我们已经组装了一些常用环境的Presets：</p>
+<ul>
+<li><a href="https://babeljs.io/docs/en/babel-preset-env" target="_blank" rel="noopener">@babel/preset-env</a></li>
+<li><a href="https://babeljs.io/docs/en/babel-preset-flow" target="_blank" rel="noopener">@babel/preset-flow</a></li>
+<li><a href="https://babeljs.io/docs/en/babel-preset-react" target="_blank" rel="noopener">@babel/preset-react</a></li>
+<li><a href="https://babeljs.io/docs/en/babel-preset-typescript" title="} # Stage-X(实验阶段的Presets) 任何还处在Stage-X的转化，还没有合入JS成为release版本（比如ES6/ES2015）。 TC39将提案划分成一下几个阶段： * Stage 0-稻草人阶段：只是个想法，可能会有对应的Babel插件。 * Stage 1-提案阶段：值得继续讨论，研发。 * Stage 2-草稿阶段：初始规范。 * Stage 3-候选人阶段：完整的规范，并且浏览器初步实现。 * Stage 4-完成阶段：下一年会被合入relase。 # 创建一个Presets 如果要创建一个presets，你需要export config。也就是返回一组plugins数组。如下： undefined > presets也可以包括其它presets，和plugins，同时也可带有options。 undefined 更多信息，可查看{% link babel手册 presets部分 https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/user-handbook.md#making-your-own-preset" target="_blank" rel="noopener">@babel/preset-typescript</a>
+</li>
+</ul>
+<h1 id="Preset路径"><a href="#Preset路径" class="headerlink" title="Preset路径"></a>Preset路径</h1><p>Preset路径和缩写和Plugin的规则一致</p>
+<h1 id="Preset顺序"><a href="#Preset顺序" class="headerlink" title="Preset顺序"></a>Preset顺序</h1><p>presets的顺序是逆序：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"presets"</span>: [</span><br><span class="line">    <span class="string">"a"</span>,</span><br><span class="line">    <span class="string">"b"</span>,</span><br><span class="line">    <span class="string">"c"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上，会现运行<code>c</code>，再是<code>b</code>，最后是<code>a</code>。</p>
+<h1 id="Preset-options"><a href="#Preset-options" class="headerlink" title="Preset options"></a>Preset options</h1><p>preset的option设置与plugin一致。</p>
+<h1 id="Plugins-amp-Presets-总结"><a href="#Plugins-amp-Presets-总结" class="headerlink" title="Plugins &amp; Presets 总结"></a>Plugins &amp; Presets 总结</h1><img src="/2019/02/16/babel-presets/Plugins&Presets.svg">
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/16/babel/" rel="next" title="babel plugins">
+                <i class="fa fa-chevron-left"></i> babel plugins
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/16/babel-1/" rel="prev" title="什么是babel">
+                什么是babel <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -293,8 +412,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -354,6 +482,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#官方Presets"><span class="nav-number">1.</span> <span class="nav-text">官方Presets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preset路径"><span class="nav-number">2.</span> <span class="nav-text">Preset路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preset顺序"><span class="nav-number">3.</span> <span class="nav-text">Preset顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preset-options"><span class="nav-number">4.</span> <span class="nav-text">Preset options</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugins-amp-Presets-总结"><span class="nav-number">5.</span> <span class="nav-text">Plugins &amp; Presets 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

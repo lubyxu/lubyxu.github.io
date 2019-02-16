@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="翻译：https://babeljs.io/docs/en/plugins Babel 是一个源码=&amp;gt;输出 的编译器。和其它编译器一样。它有三个阶段：解析、转化、输出。其实Babel本身是不做任何事情的。他基本做的就像const babel = code =&amp;gt; code;这样。通过解析代码，然后合成与输入相同的代码。因此，你为babel配置一些插件，来帮助你做一些事情。除了一个一个独立">
+<meta property="og:type" content="article">
+<meta property="og:title" content="babel plugins">
+<meta property="og:url" content="http://yoursite.com/2019/02/16/babel/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="翻译：https://babeljs.io/docs/en/plugins Babel 是一个源码=&amp;gt;输出 的编译器。和其它编译器一样。它有三个阶段：解析、转化、输出。其实Babel本身是不做任何事情的。他基本做的就像const babel = code =&amp;gt; code;这样。通过解析代码，然后合成与输入相同的代码。因此，你为babel配置一些插件，来帮助你做一些事情。除了一个一个独立">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-02-16T07:29:07.339Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="babel plugins">
+<meta name="twitter:description" content="翻译：https://babeljs.io/docs/en/plugins Babel 是一个源码=&amp;gt;输出 的编译器。和其它编译器一样。它有三个阶段：解析、转化、输出。其实Babel本身是不做任何事情的。他基本做的就像const babel = code =&amp;gt; code;这样。通过解析代码，然后合成与输入相同的代码。因此，你为babel配置一些插件，来帮助你做一些事情。除了一个一个独立">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/16/babel/"/>
+
+
+
+
+
+  <title>babel plugins | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/babel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">babel plugins</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T15:29:07+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>翻译：<a href="https://babeljs.io/docs/en/plugins" target="_blank" rel="noopener">https://babeljs.io/docs/en/plugins</a></p>
+<p>Babel 是一个源码=&gt;输出 的编译器。和其它编译器一样。它有三个阶段：解析、转化、输出。<br>其实Babel本身是不做任何事情的。他基本做的就像<code>const babel = code =&gt; code;</code>这样。通过解析代码，然后合成与输入相同的代码。因此，你为babel配置一些插件，来帮助你做一些事情。<br>除了一个一个独立的插件外，你可以利用预设<code>preset</code>来帮助你做同样的事情。</p>
+<a id="more"></a>
+<h1 id="Transform插件"><a href="#Transform插件" class="headerlink" title="Transform插件"></a>Transform插件</h1><p>ES版本的转化；React的转化。Modules的转化等等。</p>
+<h1 id="Syntax转化"><a href="#Syntax转化" class="headerlink" title="Syntax转化"></a>Syntax转化</h1><p>这类插件是Babel用来<strong>解析</strong>某种形式的句法（没有转化）。</p>
+<blockquote>
+<p>transform插件会自动开启syntax转化。所以当相应transform插件应用时，我们不需要特意指定syntax插件。</p>
+</blockquote>
+<p>另外，你也可以提供任何选项。这些<a href="https://babeljs.io/docs/en/babel-parser#plugins" target="_blank" rel="noopener">选项</a>来自于@bable/parser。这时，你的<code>.babelrc</code>文件如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"parserOpts"</span>: &#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"jsx"</span>, <span class="string">"flow"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Plugin-Preset-路径"><a href="#Plugin-Preset-路径" class="headerlink" title="Plugin/Preset 路径"></a>Plugin/Preset 路径</h1><p>如果你的插件来自于npm。你可以直接传名称。babel会自动检查<code>node_modules</code>。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [<span class="string">"babel-plugin-myPlugin"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>你也可以为你的自定义插件指定相对/绝对路径：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [<span class="string">"./node_modules/asdf/plugin"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Plugin缩写"><a href="#Plugin缩写" class="headerlink" title="Plugin缩写"></a>Plugin缩写</h2><p>如果package的名称固定以<code>babel-plugin-</code>开头，也可以缩写如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [</span><br><span class="line">    <span class="string">"myPlugin"</span>,</span><br><span class="line">    <span class="string">"babel-plugin-myPlugin"</span> <span class="comment">// equivalent</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>缩写同样适用带有域名的package：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [</span><br><span class="line">    <span class="string">"@org/babel-plugin-name"</span>,</span><br><span class="line">    <span class="string">"@org/name"</span> <span class="comment">// equivalent</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Plugin顺序"><a href="#Plugin顺序" class="headerlink" title="Plugin顺序"></a>Plugin顺序</h1><blockquote>
+<p>顺序影响到插件的visitor的顺序。</p>
+</blockquote>
+<p>也就是说，如果两个transforms都要访问”Program”节点，这两个transforms都会以plugins或preset的顺序运行。</p>
+<ul>
+<li>Plugins先运行、Presets后运行</li>
+<li>Plugins里的顺序：从头到尾按顺序。</li>
+<li>Presets里的顺序：从尾到头逆序运行。</li>
+</ul>
+<p>比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [<span class="string">"transform-decorators-legacy"</span>, <span class="string">"transform-class-properties"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上先运行<code>transform-decorators-legacy</code>，在运行<code>transform-class-properties</code>。</p>
+<p>再比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"presets"</span>: [<span class="string">"es2015"</span>, <span class="string">"react"</span>, <span class="string">"stage-2"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>presets是逆序运行。因此，先运行<code>stage-2</code>，然后<code>react</code>，最后<code>es2015</code>。<br>这样做主要还是为了向后兼容，因为大多数用户都会把<code>es2015</code>列在<code>stage-0</code>前面。了解更多信息，可以查看<a href="https://github.com/babel/notes/blob/master/2016/2016-08/august-01.md#potential-api-changes-for-traversal" target="_blank" rel="noopener">Potential API changes for traversal</a></p>
+<h1 id="Plugin-Options"><a href="#Plugin-Options" class="headerlink" title="Plugin Options"></a>Plugin Options</h1><p>Plugins和Presets都可以设置options。<br>对于没有设置options情况来说，下面三个是一样的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [<span class="string">"pluginA"</span>, [<span class="string">"pluginA"</span>], [<span class="string">"pluginA"</span>, &#123;&#125;]]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果要设置options，如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"plugins"</span>: [</span><br><span class="line">    [</span><br><span class="line">      <span class="string">"transform-async-to-module-method"</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">"module"</span>: <span class="string">"bluebird"</span>,</span><br><span class="line">        <span class="string">"method"</span>: <span class="string">"coroutine"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>presets同样也是：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"presets"</span>: [</span><br><span class="line">    [</span><br><span class="line">      <span class="string">"env"</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">"loose"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"modules"</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Plugin开发"><a href="#Plugin开发" class="headerlink" title="Plugin开发"></a>Plugin开发</h1><p>可以查看<a href="https://github.com/thejameskyle/babel-handbook" target="_blank" rel="noopener">babel手册</a>创建自己的plugin。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/articels/" rel="next" title="articels">
+                <i class="fa fa-chevron-left"></i> articels
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/16/babel-presets/" rel="prev" title="babel presets">
+                babel presets <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform插件"><span class="nav-number">1.</span> <span class="nav-text">Transform插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Syntax转化"><span class="nav-number">2.</span> <span class="nav-text">Syntax转化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugin-Preset-路径"><span class="nav-number">3.</span> <span class="nav-text">Plugin/Preset 路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugin缩写"><span class="nav-number">3.1.</span> <span class="nav-text">Plugin缩写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugin顺序"><span class="nav-number">4.</span> <span class="nav-text">Plugin顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugin-Options"><span class="nav-number">5.</span> <span class="nav-text">Plugin Options</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugin开发"><span class="nav-number">6.</span> <span class="nav-text">Plugin开发</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="翻译链接：https://babeljs.io/docs/en/usage Babel本身自带了一些工具，便于用户使用。下面会给一个关于这些工具的概括。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Babel使用说明">
+<meta property="og:url" content="http://yoursite.com/2019/02/16/guide/index.html">
+<meta property="og:site_name" content="牛牛是只🐱">
+<meta property="og:description" content="翻译链接：https://babeljs.io/docs/en/usage Babel本身自带了一些工具，便于用户使用。下面会给一个关于这些工具的概括。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/16/guide/babel-guide.svg">
+<meta property="og:updated_time" content="2019-02-16T07:30:43.009Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Babel使用说明">
+<meta name="twitter:description" content="翻译链接：https://babeljs.io/docs/en/usage Babel本身自带了一些工具，便于用户使用。下面会给一个关于这些工具的概括。">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/16/guide/babel-guide.svg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/16/guide/"/>
+
+
+
+
+
+  <title>Babel使用说明 | 牛牛是只🐱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">牛牛是只🐱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-文章">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            文章
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luby xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛牛是只🐱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Babel使用说明</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T15:30:42+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>翻译链接：<a href="https://babeljs.io/docs/en/usage" target="_blank" rel="noopener">https://babeljs.io/docs/en/usage</a></p>
+<p>Babel本身自带了一些工具，便于用户使用。下面会给一个关于这些工具的概括。<br><a id="more"></a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>这份使用说明是展示如何将ES6+的语法转化为目前浏览器能识别的代码。这个步骤会涉及到转化新语法和一些缺失方法的填充（polyfill）。</p>
+<p>设置整个过程需要如下：</p>
+<ol>
+<li><p>运行下面命令，安装包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/core @babel/cli @babel/preset-env</span><br><span class="line">npm install --save @babel/polyfill</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建babel.config.js文件在你的根目录下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> presets = [</span><br><span class="line">  [</span><br><span class="line">    <span class="string">"@babel/env"</span>,</span><br><span class="line">    &#123;</span><br><span class="line">      targets: &#123;</span><br><span class="line">        edge: <span class="string">"17"</span>,</span><br><span class="line">        firefox: <span class="string">"60"</span>,</span><br><span class="line">        chrome: <span class="string">"67"</span>,</span><br><span class="line">        safari: <span class="string">"11.1"</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      useBuiltIns: <span class="string">"usage"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; presets &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行下面命令，将代码从src目录下编译到lib目录下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./node_modules/.bin/babel src --out-dir lib</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="CLI的基本用法"><a href="#CLI的基本用法" class="headerlink" title="CLI的基本用法"></a>CLI的基本用法</h1><p>自从Bable 7之后，所有需要的Babel模块，都是npm独立的包发布在域名@babel下。这样做，对于一些特殊的案例下，会比较灵活。接下来，我们看一下<code>@babel/core</code>和<code>@babel/cli</code>。</p>
+<h2 id="Core"><a href="#Core" class="headerlink" title="Core"></a>Core</h2><p>有关Babel的核心功能，都被放到了<code>@babel/core</code>模块下。你可以直接在JS代码中直接<code>require</code>进来。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> babel = <span class="built_in">require</span>(<span class="string">"@babel/core"</span>);</span><br><span class="line">babel.transform(<span class="string">"code"</span>, optionsObject);</span><br></pre></td></tr></table></figure></p>
+<p>做为使用者，你可能需要安装其它工具，做为接口和<code>@babel/core</code>一起使用，并集成在你的开发流程中。尽管如此，你仍然会需要查看它的文档，学习options。</p>
+<h2 id="Core-tool"><a href="#Core-tool" class="headerlink" title="Core tool"></a>Core tool</h2><p><code>@babel/cli</code>允许你在终端使用babel。下面是安装命令和基本用法例子：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/core @babel/cli</span><br><span class="line">./node_modules/.bin/babel src --out-dir lib</span><br></pre></td></tr></table></figure></p>
+<p>他会解析你在src下的JS，经过一系列的转化，在lib目录下输出。由于，我们没有命令它做任何转化，最后的输出会和输入一致。我们可以通过设置option来命令babel做一些转化。<br>例子中，我们使用了<code>--out-dir</code>option。你可以通过<code>--help</code>来查看cli还支持哪些option。对于我们来说，比较重要的两个option是：plugins和presets。</p>
+<h1 id="Plugins-amp-Presets"><a href="#Plugins-amp-Presets" class="headerlink" title="Plugins &amp; Presets"></a>Plugins &amp; Presets</h1><p>转化以Plugins的形式出现。这些插件都是小的JS程序，指导Babel转化代码。你也可以创建自定义Plugins将转化应用在代码上。将ES6+语法转化成ES5，我们可以利用官方插件：<code>@babel/plugin-transform-arrow-functions</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/plugin-transform-arrow-functions</span><br><span class="line">./node_modules/.bin/babel src --out-dir lib --plugins=@babel/plugin-transform-arrow-functions</span><br></pre></td></tr></table></figure></p>
+<p>这样，任何箭头函数都会转化成ES5的兼容函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> <span class="number">1</span>;</span><br><span class="line"><span class="comment">// converted to</span></span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>同样，ES6+除了箭头函数的语法外，还有别的。我们不可能为这些语法，一个一个的添加插件。Babel提供给我们Preset属性。这个属性是一个预先定义好的插件集。</p>
+<p>和Plugins一样，你可以创建属于自己的Preset。在我们例子中，有一个非常不错的preset：<code>env</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/preset-env</span><br><span class="line">./node_modules/.bin/babel src --out-dir lib --presets=@babel/env</span><br></pre></td></tr></table></figure></p>
+<p>不需要其它的配置，<code>env</code>已经包括了将ES6+转化成当前浏览器支持的版本的所有的插件。presets同样可以有option。不是从终端配置option，接下来我们看下从配置文件中，如何配置option。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><blockquote>
+<p>基于需求，会有多种方式配置。可以阅读<a href="https://babeljs.io/docs/en/configuration" target="_blank" rel="noopener">Configure Babel</a>了解更多信息。</p>
+</blockquote>
+<p>现在，创建一个<code>babel.config.js</code>的文件，内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> presets = [</span><br><span class="line">  [</span><br><span class="line">    <span class="string">"@babel/env"</span>,</span><br><span class="line">    &#123;</span><br><span class="line">      targets: &#123;</span><br><span class="line">        edge: <span class="string">"17"</span>,</span><br><span class="line">        firefox: <span class="string">"60"</span>,</span><br><span class="line">        chrome: <span class="string">"67"</span>,</span><br><span class="line">        safari: <span class="string">"11.1"</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; presets &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>现在，<code>env</code>会下载那些现在浏览器无法正常使用的插件，转化代码。以上，我们所做的都是转化语法。接下来，让我们看下polyfill。</p>
+<h1 id="Polyfill"><a href="#Polyfill" class="headerlink" title="Polyfill"></a>Polyfill</h1><p><code>@babel/polyfill</code>包括<code>core-js</code>和一个自定义的<a href="https://github.com/facebook/regenerator/blob/master/packages/regenerator-runtime/runtime.js" target="_blank" rel="noopener">`regenerator runtime`</a>来模拟一个ES6+的环境。</p>
+<p>这就意味着，你可以用内置的语法，比如<code>Promise</code>或者<code>WeakMap</code>，静态方法比如<code>Array.from</code>或者<code>Object.assign</code>，原型方法比如<code>Array.prototype.includes</code>，和generator函数（需要用<a href="https://babeljs.io/docs/en/babel-plugin-transform-regenerator" target="_blank" rel="noopener">regenerator</a>插件）。Polyfill会被添加到全局作用域下。</p>
+<p>对于库/工具开发者而言，Polyfill提供的太重。如果你不使用类似<code>Array.prototype.includes</code>原型方法，你可以利用<a href="https://babeljs.io/docs/en/babel-plugin-transform-runtime" target="_blank" rel="noopener">transform runtime</a>，代替<code>@babel/polyfill</code>，避免污染全局环境。因为<code>plugin-transform-runtime</code>提供了一个方法到<code>core-js</code>的一个别名。你可以直接用这个插件，无需再polyfill。如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// in</span></span><br><span class="line"><span class="keyword">var</span> sym = <span class="built_in">Symbol</span>();</span><br><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>();</span><br><span class="line"><span class="built_in">console</span>.log(arr[<span class="built_in">Symbol</span>.iterator]());</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// out</span></span><br><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"><span class="keyword">var</span> _getIterator2 = <span class="built_in">require</span>(<span class="string">"@babel/runtime-corejs2/core-js/get-iterator"</span>);</span><br><span class="line"><span class="keyword">var</span> _getIterator3 = _interopRequireDefault(_getIterator2);</span><br><span class="line"><span class="keyword">var</span> _promise = <span class="built_in">require</span>(<span class="string">"@babel/runtime-corejs2/core-js/promise"</span>);</span><br><span class="line"><span class="keyword">var</span> _promise2 = _interopRequireDefault(_promise);</span><br><span class="line"><span class="keyword">var</span> _symbol = <span class="built_in">require</span>(<span class="string">"@babel/runtime-corejs2/core-js/symbol"</span>);</span><br><span class="line"><span class="keyword">var</span> _symbol2 = _interopRequireDefault(_symbol);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_interopRequireDefault</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj &amp;&amp; obj.__esModule ? obj : &#123; <span class="attr">default</span>: obj &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sym = (<span class="number">0</span>, _symbol2.default)();</span><br><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> _promise2.default();</span><br><span class="line"><span class="built_in">console</span>.log((<span class="number">0</span>, _getIterator3.default)(arr));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><em>如果你确切知道哪些功能需要你polyfill，你可以直接从<code>core-js</code>中<code>require</code>他们。</em></p>
+</blockquote>
+<p>幸运的是，<code>env</code> preset提供了一个选项<code>useBuiltIns</code>给我们。当我们将它设置成<code>&quot;usage&quot;</code>时，<code>env</code>就会应用最新的优化。这些优化包括了你需要的polyfill。配置如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> presets = [</span><br><span class="line">  [</span><br><span class="line">    <span class="string">"@babel/env"</span>,</span><br><span class="line">    &#123;</span><br><span class="line">      targets: &#123;</span><br><span class="line">        edge: <span class="string">"17"</span>,</span><br><span class="line">        firefox: <span class="string">"60"</span>,</span><br><span class="line">        chrome: <span class="string">"67"</span>,</span><br><span class="line">        safari: <span class="string">"11.1"</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      useBuiltIns: <span class="string">"usage"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; presets &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>基于上面的配置，Babel可以检测你目标环境需要转化的语法问题和一些polyfill的内置方法。比如下面代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve().finally();</span><br></pre></td></tr></table></figure></p>
+<p>就会转化成（因为edge 17没有<code>Promise.prototype.finally</code>方法）：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"core-js/modules/es.promise.finally"</span>);</span><br><span class="line"><span class="built_in">Promise</span>.resolve().finally();</span><br></pre></td></tr></table></figure></p>
+<p>如果我们没有设置<code>env</code>里<code>useBuiltIns</code>为<code>usage</code>，我们必须在入口文件头部require整个polyfill进来。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我们利用<code>@babel/cli</code>将babel运行在终端，<code>@babel/polyfill</code>为JS的一些特征填充。<code>env</code>预设转化和填充目标浏览器没有的功能。</p>
+<img src="/2019/02/16/guide/babel-guide.svg">
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/16/configure-babel/" rel="next" title="Babel配置">
+                <i class="fa fa-chevron-left"></i> Babel配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">luby xu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CLI的基本用法"><span class="nav-number">2.</span> <span class="nav-text">CLI的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Core"><span class="nav-number">2.1.</span> <span class="nav-text">Core</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Core-tool"><span class="nav-number">2.2.</span> <span class="nav-text">Core tool</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugins-amp-Presets"><span class="nav-number">3.</span> <span class="nav-text">Plugins &amp; Presets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-number">4.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Polyfill"><span class="nav-number">5.</span> <span class="nav-text">Polyfill</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luby xu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
